@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -15,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,14 +27,15 @@ public class ChartAnimation extends Application{
     private int chartHeight = 500;
     private int rAMult = 45;
     private int decMult = 3;
-    private int mSun = 7;
-    private int mMoon = 7;
+    private int mSun = 10;
+    private int mMoon = 10;
     private int mPlanet = 2;
     private int hourDeg = 15;
     private double x;
     private double y;
     private Circle[] ballP = new Circle[7];
     private Text[] tPlanets = new Text[7];
+    private int fontSize = 15;
     	
     @Override
     public void start(Stage stage) {
@@ -47,24 +50,25 @@ public class ChartAnimation extends Application{
     	Line equator = new Line(0, chartHeight/2, chartWidth, chartHeight/2);
     	Circle ball = new Circle(mSun, Color.YELLOW);
     	Circle ballM = new Circle(mMoon, Color.WHITE);
-    	Text tDate = new Text (10,50,strDate);
-    	Text tSun = new Text (10,50,"S");
-        Text tMoon = new Text (10,50,"M");
+    	Text tDate = new Text (50,50,strDate);
+    	
+    	//Text tSun = new Text ("S");
+        //Text tMoon = new Text ("M");
         
-        tPlanets[0] = new Text (10,50,"me");
-        tPlanets[1] = new Text (10,50,"ve");
-        tPlanets[2] = new Text (10,50,"ma");
-        tPlanets[3] = new Text (10,50,"ju");
-        tPlanets[4] = new Text (10,50,"sa");
-        tPlanets[5] = new Text (10,50,"ur");
-        tPlanets[6] = new Text (10,50,"ne");
+        tPlanets[0] = new Text ("Me");
+        tPlanets[1] = new Text ("Ve");
+        tPlanets[2] = new Text ("Ma");
+        tPlanets[3] = new Text ("Ju");
+        tPlanets[4] = new Text ("Sa");
+        tPlanets[5] = new Text ("Ur");
+        tPlanets[6] = new Text ("Ne");
         
         canvas.getChildren().add(ball);
         canvas.getChildren().add(ballM);
         canvas.getChildren().add(equator);
         canvas.getChildren().add(tDate);
-        canvas.getChildren().add(tSun);
-        canvas.getChildren().add(tMoon);
+        //canvas.getChildren().add(tSun);
+        //canvas.getChildren().add(tMoon);
         canvas.getChildren().addAll(tPlanets);
         
         
@@ -95,8 +99,8 @@ public class ChartAnimation extends Application{
             	ball.setRadius(r(mSun,canvas.getWidth(),canvas.getHeight()));
             	ball.setLayoutX(x);
             	ball.setLayoutY(y);
-            	tSun.setX(x-mSun/2);
-            	tSun.setY(y+3*mSun);
+            	//tSun.setX(x-mSun/2);
+            	//tSun.setY(y+3*mSun);
             	
             	//calculate the moon's chart coordinates and radius
             	Moon moon = new Moon (d(calendar), sun.getML() , sun.getMA());
@@ -105,8 +109,8 @@ public class ChartAnimation extends Application{
             	ballM.setRadius(r(mMoon,canvas.getWidth(),canvas.getHeight()));
             	ballM.setLayoutX(x);
             	ballM.setLayoutY(y);
-            	tMoon.setX(x-mMoon/2);
-            	tMoon.setY(y+3*mMoon);
+            	//tMoon.setX(x-mMoon/2);
+            	//tMoon.setY(y+3*mMoon);
             	
             	//calculate the coordinates and radii of the planets
             	Planet[] planets = calcPlanets(d(calendar), sun.getX(), sun.getY(), sun.getZ());
@@ -127,6 +131,7 @@ public class ChartAnimation extends Application{
             	calendar.add(Calendar.HOUR_OF_DAY, 1);
             	String dt = dateFormat.format(calendar.getTime());
             	tDate.setText(dt);
+            	tDate.setFont(new Font(r(fontSize,canvas.getWidth(),canvas.getHeight())));
             	
             	//move time forward by one day
             	//calendar.add(Calendar.DAY_OF_MONTH, 1);
