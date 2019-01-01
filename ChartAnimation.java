@@ -30,12 +30,15 @@ public class ChartAnimation extends Application{
     private int mSun = 10;
     private int mMoon = 10;
     private int mPlanet = 2;
+    private int mEcliptic = 1;
     private int hourDeg = 15;
     private double x;
     private double y;
     private Circle[] ballP = new Circle[7];
+    private Circle[] cEcliptic = new Circle[100];
     private Text[] tPlanets = new Text[7];
     private int fontSize = 15;
+    private int pFontSize = 12;
     	
     @Override
     public void start(Stage stage) {
@@ -55,13 +58,13 @@ public class ChartAnimation extends Application{
     	//Text tSun = new Text ("S");
         //Text tMoon = new Text ("M");
         
-        tPlanets[0] = new Text ("Me");
-        tPlanets[1] = new Text ("Ve");
-        tPlanets[2] = new Text ("Ma");
-        tPlanets[3] = new Text ("Ju");
-        tPlanets[4] = new Text ("Sa");
-        tPlanets[5] = new Text ("Ur");
-        tPlanets[6] = new Text ("Ne");
+        tPlanets[0] = new Text ("Mercury");
+        tPlanets[1] = new Text ("Venus");
+        tPlanets[2] = new Text ("Mars");
+        tPlanets[3] = new Text ("Jupiter");
+        tPlanets[4] = new Text ("Saturn");
+        tPlanets[5] = new Text ("Uranus");
+        tPlanets[6] = new Text ("Neptune");
         
         canvas.getChildren().add(ball);
         canvas.getChildren().add(ballM);
@@ -72,10 +75,16 @@ public class ChartAnimation extends Application{
         canvas.getChildren().addAll(tPlanets);
         
         
-        for(int k=0; k<7; k++) {
-			ballP[k] = new Circle(mPlanet, Color.ALICEBLUE);
+        
+        for(int k=0; k<ballP.length; k++) {
+			ballP[k] = new Circle(mPlanet, Color.RED);
 			canvas.getChildren().add(ballP[k]);
 		}
+        
+        for(int k=0; k<cEcliptic.length; k++) {
+			cEcliptic[k] = new Circle(mEcliptic, Color.YELLOW);
+			canvas.getChildren().add(cEcliptic[k]);
+        }
         
         
         stage.setTitle("Star Chart Animation");
@@ -88,9 +97,21 @@ public class ChartAnimation extends Application{
         	@Override
             public void handle(ActionEvent t) {
         		
+        		//draw the equator
         		equator.setEndX(canvas.getWidth());
         		equator.setStartY(canvas.getHeight()/2);
         		equator.setEndY(canvas.getHeight()/2);
+        		
+        		//draw the ecliptic
+        		for(int k=0; k<cEcliptic.length; k++) {
+        			//Circle c = new Circle(mEcliptic, Color.YELLOW);
+        			//canvas.getChildren().add(c);
+        			//c.setLayoutX(k/0.01);
+        			//c.setLayoutY(100);
+        			cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1)); //correct
+        			//cEcliptic[k].setLayoutY(canvas.getHeight()/2 - 23.5*decMult*Math.sin(k/0.02));
+        			cEcliptic[k].setLayoutY(canvas.getHeight()/2 + 23.5*decMult*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)); //needs to be scaled
+        		}
         		
         		//calculate the sun's chart coordinates and radius
                 Sun sun = new Sun(d(calendar));
@@ -116,14 +137,18 @@ public class ChartAnimation extends Application{
             	Planet[] planets = calcPlanets(d(calendar), sun.getX(), sun.getY(), sun.getZ());
             	int j = 0;
         		for (Planet p : planets) {
+        			
         			p.convertToGeocentric();
         			x = x(p.getRA())*canvas.getWidth()/chartWidth;
                 	y = y(p.getDec())*canvas.getHeight()/chartHeight;
+                	
                 	ballP[j].setRadius(r(mPlanet,canvas.getWidth(),canvas.getHeight()));
                 	ballP[j].setLayoutX(x);
                 	ballP[j].setLayoutY(y);
-                	tPlanets[j].setX(x-mPlanet/2);
-                	tPlanets[j].setY(y+7*mPlanet);
+                	tPlanets[j].setX(x+2*mPlanet);
+                	tPlanets[j].setY(y+8*mPlanet);
+                	tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
+                	
                 	j++;
         		}
             	            	
@@ -186,6 +211,7 @@ public class ChartAnimation extends Application{
     }
     
     private double d(Calendar c){
+    	
     	int year   = c.get(Calendar.YEAR);
         int month  = c.get(Calendar.MONTH) + 1;
         int day    = c.get(Calendar.DAY_OF_MONTH);
@@ -193,7 +219,8 @@ public class ChartAnimation extends Application{
         int minute = c.get(Calendar.MINUTE);
         int dInt   = 367*year - 7*(year+(month+9)/12)/4 + 275*month/9 + day - 730530;
         double d   = dInt + (hour + minute/60.0)/24.0;
-    	return d;
+    	
+        return d;
     }
     
     public static void main(String[] args) {
