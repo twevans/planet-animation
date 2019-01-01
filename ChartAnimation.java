@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -225,7 +224,11 @@ public class ChartAnimation extends Application{
         return d;
     }
     
-    public static void main(String[] args) {
-        launch();
+    //public static void main(String[] args) {
+      //  launch();
+    //}
+    
+    public void run(){
+    	launch();
     }
 }
