@@ -49,7 +49,7 @@ public class ChartAnimation extends Application{
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = dateFormat.format(date);
         Pane canvas = new Pane();
-    	Scene scene = new Scene(canvas, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
+        Scene scene = new Scene(canvas, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
     	Line equator = new Line(0, chartHeight/2, chartWidth, chartHeight/2);
     	Circle ball = new Circle(mSun, Color.YELLOW);
     	Circle ballM = new Circle(mMoon, Color.WHITE);
@@ -66,13 +66,14 @@ public class ChartAnimation extends Application{
         tPlanets[5] = new Text ("Uranus");
         tPlanets[6] = new Text ("Neptune");
         
-        canvas.getChildren().add(ball);
-        canvas.getChildren().add(ballM);
         canvas.getChildren().add(equator);
         canvas.getChildren().add(tDate);
+        canvas.getChildren().addAll(tPlanets);
+        canvas.getChildren().add(ball);
+        canvas.getChildren().add(ballM);
         //canvas.getChildren().add(tSun);
         //canvas.getChildren().add(tMoon);
-        canvas.getChildren().addAll(tPlanets);
+        
         
         
         
@@ -101,16 +102,13 @@ public class ChartAnimation extends Application{
         		equator.setEndX(canvas.getWidth());
         		equator.setStartY(canvas.getHeight()/2);
         		equator.setEndY(canvas.getHeight()/2);
+        		equator.toBack();
         		
         		//draw the ecliptic
         		for(int k=0; k<cEcliptic.length; k++) {
-        			//Circle c = new Circle(mEcliptic, Color.YELLOW);
-        			//canvas.getChildren().add(c);
-        			//c.setLayoutX(k/0.01);
-        			//c.setLayoutY(100);
-        			cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1)); //correct
-        			//cEcliptic[k].setLayoutY(canvas.getHeight()/2 - 23.5*decMult*Math.sin(k/0.02));
-        			cEcliptic[k].setLayoutY(canvas.getHeight()/2 + 23.5*decMult*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)); //needs to be scaled
+        			cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
+        			cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
+        			cEcliptic[k].toBack();
         		}
         		
         		//calculate the sun's chart coordinates and radius
@@ -120,6 +118,7 @@ public class ChartAnimation extends Application{
             	ball.setRadius(r(mSun,canvas.getWidth(),canvas.getHeight()));
             	ball.setLayoutX(x);
             	ball.setLayoutY(y);
+            	ball.toFront();
             	//tSun.setX(x-mSun/2);
             	//tSun.setY(y+3*mSun);
             	
@@ -130,6 +129,7 @@ public class ChartAnimation extends Application{
             	ballM.setRadius(r(mMoon,canvas.getWidth(),canvas.getHeight()));
             	ballM.setLayoutX(x);
             	ballM.setLayoutY(y);
+            	ballM.toFront();
             	//tMoon.setX(x-mMoon/2);
             	//tMoon.setY(y+3*mMoon);
             	
@@ -151,6 +151,8 @@ public class ChartAnimation extends Application{
                 	
                 	j++;
         		}
+        		
+        		
             	            	
             	//move time forward by one hour
             	calendar.add(Calendar.HOUR_OF_DAY, 1);
