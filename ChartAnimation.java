@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -89,6 +91,11 @@ public class ChartAnimation extends Application{
         
         stage.setTitle("Star Chart Animation");
         stage.setScene(scene);
+        stage.setOnCloseRequest(e -> {
+        	Platform.exit();
+        	System.exit(0);
+        	
+        });
         stage.show();
         
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(50), 
