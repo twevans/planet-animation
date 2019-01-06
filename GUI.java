@@ -14,12 +14,13 @@ import javax.swing.BorderFactory;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class GUI {
+	
+	
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -33,7 +34,7 @@ public class GUI {
         System.out.println("Created GUI on EDT? "+
         SwingUtilities.isEventDispatchThread());
         JFrame f = new JFrame("Planet Positions");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // add to chart animation class as well?
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         f.add(new MyPanel());
         f.pack();
         f.setVisible(true);
@@ -41,6 +42,9 @@ public class GUI {
 }
 
 class MyPanel extends JPanel implements ActionListener {
+	
+	static Date d;
+	
 	protected JButton b;
 	protected JSpinner s;
 	protected JRadioButton rS;
@@ -100,9 +104,12 @@ class MyPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     	
         
-    	
+    	d = (Date)s.getValue(); 
     	ChartAnimation ca = new ChartAnimation();
-		ca.run();
+    	//System.out.println("test");
+    	ca.runChart();
+    	
+    	
     	
     }
     
