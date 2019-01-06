@@ -13,7 +13,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -40,26 +43,39 @@ public class ChartAnimation extends Application{
     private Text[] tPlanets = new Text[7];
     private int fontSize = 15;
     private int pFontSize = 12;
-    	
+    private Date date;
+    private Calendar calendar;
+    private Scene scene0, scene;
+    
     @Override
     public void start(Stage stage) {
     	
-    	Date date = new Date();
-        Calendar calendar = new GregorianCalendar();
+    	date = new Date();
+    	calendar = new GregorianCalendar();
         calendar.setTime(date);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = dateFormat.format(date);
+        
+        //Scene 0
+        Pane canvas0 = new Pane();
+        canvas0.setStyle("-fx-background-color: cornflowerblue;");
+        Scene scene0 = new Scene(canvas0, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
+        Button button0 = new Button("Run");
+        canvas0.getChildren().add(button0);
+        button0.setLayoutX(canvas0.getWidth()/2);
+    	button0.setLayoutY(0.9*canvas0.getHeight());
+      		
+        //Scene
         Pane canvas = new Pane();
+        canvas.setStyle("-fx-background-color: cornflowerblue;");
         Scene scene = new Scene(canvas, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
     	Line equator = new Line(0, chartHeight/2, chartWidth, chartHeight/2);
     	Circle ball = new Circle(mSun, Color.YELLOW);
     	Circle ballM = new Circle(mMoon, Color.WHITE);
-    	Text tDate = new Text (50,50,strDate);
+    	Text tDate = new Text (25,50,strDate);
+    	Button button1 = new Button("Exit");
     	
-    	//Text tSun = new Text ("S");
-        //Text tMoon = new Text ("M");
-        
-        tPlanets[0] = new Text ("Mercury");
+    	tPlanets[0] = new Text ("Mercury");
         tPlanets[1] = new Text ("Venus");
         tPlanets[2] = new Text ("Mars");
         tPlanets[3] = new Text ("Jupiter");
@@ -72,11 +88,7 @@ public class ChartAnimation extends Application{
         canvas.getChildren().addAll(tPlanets);
         canvas.getChildren().add(ball);
         canvas.getChildren().add(ballM);
-        //canvas.getChildren().add(tSun);
-        //canvas.getChildren().add(tMoon);
-        
-        
-        
+        canvas.getChildren().add(button1);
         
         for(int k=0; k<ballP.length; k++) {
 			ballP[k] = new Circle(mPlanet, Color.RED);
@@ -88,14 +100,24 @@ public class ChartAnimation extends Application{
 			canvas.getChildren().add(cEcliptic[k]);
         }
         
-        
         stage.setTitle("Star Chart Animation");
-        stage.setScene(scene);
+        stage.setScene(scene0);
+        
+        button0.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	date = new Date();
+            	calendar = new GregorianCalendar();
+                calendar.setTime(date);
+                stage.setScene(scene);
+            }
+        });
+        
+        button1.setOnAction(e -> stage.setScene(scene0)); 
+        
         stage.setOnCloseRequest(e -> {
         	Platform.exit();
-        	System.exit(0);
-        	
         });
+        
         stage.show();
         
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(50), 
@@ -104,7 +126,13 @@ public class ChartAnimation extends Application{
         	@Override
             public void handle(ActionEvent t) {
         		
-        		//draw the equator
+        		button0.setLayoutX(canvas0.getWidth()/2);
+            	button0.setLayoutY(0.9*canvas0.getHeight());
+        		
+        		button1.setLayoutX(canvas.getWidth()/2);
+            	button1.setLayoutY(0.9*canvas.getHeight());
+            	
+            	//draw the equator
         		equator.setEndX(canvas.getWidth());
         		equator.setStartY(canvas.getHeight()/2);
         		equator.setEndY(canvas.getHeight()/2);
@@ -125,8 +153,6 @@ public class ChartAnimation extends Application{
             	ball.setLayoutX(x);
             	ball.setLayoutY(y);
             	ball.toFront();
-            	//tSun.setX(x-mSun/2);
-            	//tSun.setY(y+3*mSun);
             	
             	//calculate the moon's chart coordinates and radius
             	Moon moon = new Moon (d(calendar), sun.getML() , sun.getMA());
@@ -136,8 +162,6 @@ public class ChartAnimation extends Application{
             	ballM.setLayoutX(x);
             	ballM.setLayoutY(y);
             	ballM.toFront();
-            	//tMoon.setX(x-mMoon/2);
-            	//tMoon.setY(y+3*mMoon);
             	
             	//calculate the coordinates and radii of the planets
             	Planet[] planets = calcPlanets(d(calendar), sun.getX(), sun.getY(), sun.getZ());
@@ -163,7 +187,7 @@ public class ChartAnimation extends Application{
             	//move time forward by one hour
             	calendar.add(Calendar.HOUR_OF_DAY, 1);
             	String dt = dateFormat.format(calendar.getTime());
-            	tDate.setText(dt);
+            	tDate.setText("Date:  " + dt);
             	tDate.setFont(new Font(r(fontSize,canvas.getWidth(),canvas.getHeight())));
             	
             	//move time forward by one day
@@ -231,11 +255,13 @@ public class ChartAnimation extends Application{
         return d;
     }
     
-    //public static void main(String[] args) {
-      //  launch();
-    //}
+    public static void main(String[] args) {
+       
+       launch();
+    }
     
-    public void run(){
+    public void runChart(){
+    	System.out.println("test");
     	launch();
     }
 }
