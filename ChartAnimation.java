@@ -59,7 +59,7 @@ public class ChartAnimation extends Application{
         //Scene 0
         Pane canvas0 = new Pane();
         canvas0.setStyle("-fx-background-color: cornflowerblue;");
-        Scene scene0 = new Scene(canvas0, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
+        scene0 = new Scene(canvas0, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
         Button button0 = new Button("Run");
         canvas0.getChildren().add(button0);
         button0.setLayoutX(canvas0.getWidth()/2);
@@ -68,7 +68,7 @@ public class ChartAnimation extends Application{
         //Scene
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: cornflowerblue;");
-        Scene scene = new Scene(canvas, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
+        scene = new Scene(canvas, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
     	Line equator = new Line(0, chartHeight/2, chartWidth, chartHeight/2);
     	Circle ball = new Circle(mSun, Color.YELLOW);
     	Circle ballM = new Circle(mMoon, Color.WHITE);
