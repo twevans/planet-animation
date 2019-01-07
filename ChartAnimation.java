@@ -46,6 +46,7 @@ public class ChartAnimation extends Application{
     private Date date;
     private Calendar calendar;
     private Scene scene0, scene;
+    private boolean runIndicator = false;
     
     @Override
     public void start(Stage stage) {
@@ -68,6 +69,7 @@ public class ChartAnimation extends Application{
         //Scene
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: cornflowerblue;");
+        //canvas.setStyle("-fx-background-color: black;");
         scene = new Scene(canvas, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
     	Line equator = new Line(0, chartHeight/2, chartWidth, chartHeight/2);
     	Circle ball = new Circle(mSun, Color.YELLOW);
@@ -75,13 +77,9 @@ public class ChartAnimation extends Application{
     	Text tDate = new Text (25,50,strDate);
     	Button button1 = new Button("Exit");
     	
-    	tPlanets[0] = new Text ("Mercury");
-        tPlanets[1] = new Text ("Venus");
-        tPlanets[2] = new Text ("Mars");
-        tPlanets[3] = new Text ("Jupiter");
-        tPlanets[4] = new Text ("Saturn");
-        tPlanets[5] = new Text ("Uranus");
-        tPlanets[6] = new Text ("Neptune");
+    	for(int k=0; k<tPlanets.length; k++) {
+    		tPlanets[k] = new Text (Planet.names[k]);
+    	}
         
         canvas.getChildren().add(equator);
         canvas.getChildren().add(tDate);
@@ -105,6 +103,7 @@ public class ChartAnimation extends Application{
         
         button0.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
+            	runIndicator = true;
             	date = new Date();
             	calendar = new GregorianCalendar();
                 calendar.setTime(date);
@@ -112,7 +111,13 @@ public class ChartAnimation extends Application{
             }
         });
         
-        button1.setOnAction(e -> stage.setScene(scene0)); 
+        //button1.setOnAction(e -> stage.setScene(scene0)); 
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	runIndicator = false;
+                stage.setScene(scene0);
+            }
+        });
         
         stage.setOnCloseRequest(e -> {
         	Platform.exit();
@@ -126,81 +131,85 @@ public class ChartAnimation extends Application{
         	@Override
             public void handle(ActionEvent t) {
         		
-        		button0.setLayoutX(canvas0.getWidth()/2);
-            	button0.setLayoutY(0.9*canvas0.getHeight());
-        		
-        		button1.setLayoutX(canvas.getWidth()/2);
-            	button1.setLayoutY(0.9*canvas.getHeight());
-            	
-            	//draw the equator
-        		equator.setEndX(canvas.getWidth());
-        		equator.setStartY(canvas.getHeight()/2);
-        		equator.setEndY(canvas.getHeight()/2);
-        		equator.toBack();
-        		
-        		//draw the ecliptic
-        		for(int k=0; k<cEcliptic.length; k++) {
-        			cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
-        			cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
-        			cEcliptic[k].toBack();
-        		}
-        		
-        		//calculate the sun's chart coordinates and radius
-                Sun sun = new Sun(d(calendar));
-            	x = x(sun.getRA())*canvas.getWidth()/chartWidth;
-            	y = y(sun.getDec())*canvas.getHeight()/chartHeight;
-            	ball.setRadius(r(mSun,canvas.getWidth(),canvas.getHeight()));
-            	ball.setLayoutX(x);
-            	ball.setLayoutY(y);
-            	ball.toFront();
-            	
-            	//calculate the moon's chart coordinates and radius
-            	Moon moon = new Moon (d(calendar), sun.getML() , sun.getMA());
-            	x = x(moon.getRA())*canvas.getWidth()/chartWidth;
-            	y = y(moon.getDec())*canvas.getHeight()/chartHeight;
-            	ballM.setRadius(r(mMoon,canvas.getWidth(),canvas.getHeight()));
-            	ballM.setLayoutX(x);
-            	ballM.setLayoutY(y);
-            	ballM.toFront();
-            	
-            	//calculate the coordinates and radii of the planets
-            	Planet[] planets = calcPlanets(d(calendar), sun.getX(), sun.getY(), sun.getZ());
-            	int j = 0;
-        		for (Planet p : planets) {
+        		if (runIndicator) {
         			
-        			p.convertToGeocentric();
-        			x = x(p.getRA())*canvas.getWidth()/chartWidth;
-                	y = y(p.getDec())*canvas.getHeight()/chartHeight;
+        			//System.out.println("running");
+        		
+        			button0.setLayoutX(canvas0.getWidth()/2);
+        			button0.setLayoutY(0.9*canvas0.getHeight());
+        		
+        			button1.setLayoutX(canvas.getWidth()/2);
+        			button1.setLayoutY(0.9*canvas.getHeight());
+            	
+        			//draw the equator
+        			equator.setEndX(canvas.getWidth());
+        			equator.setStartY(canvas.getHeight()/2);
+        			equator.setEndY(canvas.getHeight()/2);
+        			equator.toBack();
+        		
+        			//draw the ecliptic
+        			for(int k=0; k<cEcliptic.length; k++) {
+        				cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
+        				cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
+        				cEcliptic[k].toBack();
+        			}
+        		
+        			//calculate the sun's chart coordinates and radius
+        			Sun sun = new Sun(d(calendar));
+        			x = x(sun.getRA())*canvas.getWidth()/chartWidth;
+        			y = y(sun.getDec())*canvas.getHeight()/chartHeight;
+        			ball.setRadius(r(mSun,canvas.getWidth(),canvas.getHeight()));
+        			ball.setLayoutX(x);
+        			ball.setLayoutY(y);
+        			ball.toFront();
+            	
+        			//calculate the moon's chart coordinates and radius
+        			Moon moon = new Moon (d(calendar), sun.getML() , sun.getMA());
+        			x = x(moon.getRA())*canvas.getWidth()/chartWidth;
+        			y = y(moon.getDec())*canvas.getHeight()/chartHeight;
+        			ballM.setRadius(r(mMoon,canvas.getWidth(),canvas.getHeight()));
+        			ballM.setLayoutX(x);
+        			ballM.setLayoutY(y);
+        			ballM.toFront();
+            	
+        			//calculate the coordinates and radii of the planets
+        			Planet[] planets = calcPlanets(d(calendar), sun.getX(), sun.getY(), sun.getZ());
+        			int j = 0;
+        			for (Planet p : planets) {
+        			
+        				p.convertToGeocentric();
+        				x = x(p.getRA())*canvas.getWidth()/chartWidth;
+        				y = y(p.getDec())*canvas.getHeight()/chartHeight;
                 	
-                	ballP[j].setRadius(r(mPlanet,canvas.getWidth(),canvas.getHeight()));
-                	ballP[j].setLayoutX(x);
-                	ballP[j].setLayoutY(y);
-                	tPlanets[j].setX(x+2*mPlanet);
-                	tPlanets[j].setY(y+8*mPlanet);
-                	tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
+        				ballP[j].setRadius(r(mPlanet,canvas.getWidth(),canvas.getHeight()));
+        				ballP[j].setLayoutX(x);
+        				ballP[j].setLayoutY(y);
+        				tPlanets[j].setX(x+2*mPlanet);
+        				tPlanets[j].setY(y+8*mPlanet);
+        				tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
                 	
-                	j++;
+        				j++;
+        			}
+        		
+        			//move time forward by one hour
+        			calendar.add(Calendar.HOUR_OF_DAY, 1);
+        			String dt = dateFormat.format(calendar.getTime());
+        			tDate.setText("Date:  " + dt);
+        			tDate.setFont(new Font(r(fontSize,canvas.getWidth(),canvas.getHeight())));
+            	
+        			//move time forward by one day
+        			//calendar.add(Calendar.DAY_OF_MONTH, 1);
+        			//String dt = dateFormat.format(calendar.getTime());
+        			//tDate.setText(dt);
+            	
+        			//move time forward by one minute
+        			//calendar.add(Calendar.MINUTE, 1);
         		}
-        		
-        		
-            	            	
-            	//move time forward by one hour
-            	calendar.add(Calendar.HOUR_OF_DAY, 1);
-            	String dt = dateFormat.format(calendar.getTime());
-            	tDate.setText("Date:  " + dt);
-            	tDate.setFont(new Font(r(fontSize,canvas.getWidth(),canvas.getHeight())));
-            	
-            	//move time forward by one day
-            	//calendar.add(Calendar.DAY_OF_MONTH, 1);
-            	//String dt = dateFormat.format(calendar.getTime());
-            	//tDate.setText(dt);
-            	
-            	//move time forward by one minute
-            	//calendar.add(Calendar.MINUTE, 1);
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+        
     }
     
     private double x(double rA){

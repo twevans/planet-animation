@@ -4,6 +4,8 @@ public class Planet{
 
 	String name;
 	
+	public static final String[] names = {"Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
+	
 	public static final double[] mercury    = {48.3313, 7.0047, 29.1241, 0.387098, 0.205635, 168.6562};
 	public static final double[] mercuryDot = {3.24587*Math.pow(10,-5), 5.0*Math.pow(10,-8), 1.01444*Math.pow(10,-5), 0.0, 5.59*Math.pow(10,-10), 4.0923344368};
 	public static final double[] venus      = {76.6799, 3.3946, 54.8910, 0.723330, 0.006773, 48.052};
