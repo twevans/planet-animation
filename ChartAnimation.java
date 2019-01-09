@@ -1,10 +1,12 @@
 package animation;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,9 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -34,12 +34,14 @@ public class ChartAnimation extends Application{
     private int mSun = 10;
     private int mMoon = 10;
     private int mPlanet = 2;
+    private int mStar = 1;
     private int mEcliptic = 1;
     private int hourDeg = 15;
     private double x;
     private double y;
     private Circle[] ballP = new Circle[7];
-    private Circle[] cEcliptic = new Circle[100];
+    private Circle[] cEcliptic = new Circle[200];
+    private Circle[] cStars;
     private Text[] tPlanets = new Text[7];
     private int fontSize = 15;
     private int pFontSize = 12;
@@ -48,8 +50,15 @@ public class ChartAnimation extends Application{
     private Scene scene0, scene;
     private boolean runIndicator = false;
     
+    
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws SQLException   {
+    	
+    	
+		Star stars = new Star();
+		List<Double> raStars = stars.getRA();
+		List<Double> decStars = stars.getDec();	
+		cStars = new Circle[raStars.size()];
     	
     	date = new Date();
     	calendar = new GregorianCalendar();
@@ -72,6 +81,7 @@ public class ChartAnimation extends Application{
         //canvas.setStyle("-fx-background-color: black;");
         scene = new Scene(canvas, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
     	Line equator = new Line(0, chartHeight/2, chartWidth, chartHeight/2);
+    	//equator.setStroke(Color.YELLOW);
     	Circle ball = new Circle(mSun, Color.YELLOW);
     	Circle ballM = new Circle(mMoon, Color.WHITE);
     	Text tDate = new Text (25,50,strDate);
@@ -79,6 +89,7 @@ public class ChartAnimation extends Application{
     	
     	for(int k=0; k<tPlanets.length; k++) {
     		tPlanets[k] = new Text (Planet.names[k]);
+    		//tPlanets[k].setFill(Color.RED);
     	}
         
         canvas.getChildren().add(equator);
@@ -96,6 +107,12 @@ public class ChartAnimation extends Application{
         for(int k=0; k<cEcliptic.length; k++) {
 			cEcliptic[k] = new Circle(mEcliptic, Color.YELLOW);
 			canvas.getChildren().add(cEcliptic[k]);
+		}
+        
+        for(int k=0; k<raStars.size(); k++) {
+			
+			cStars[k] = new Circle(mStar, Color.WHITE);
+			canvas.getChildren().add(cStars[k]);
         }
         
         stage.setTitle("Star Chart Animation");
@@ -153,7 +170,26 @@ public class ChartAnimation extends Application{
         				cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
         				cEcliptic[k].toBack();
         			}
-        		
+        			
+        			// calculate the positions of the background stars
+        			for(int k=0; k<raStars.size(); k++) {
+        				
+        				
+        				
+        				x = x(raStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
+            			y = y(decStars.get(k))*canvas.getHeight()/chartHeight;
+            			
+            			//System.out.println(x(raStars.get(k))*canvas.getWidth()/chartWidth);
+            			//System.out.println(y(decStars.get(k))*canvas.getHeight()/chartHeight);
+            			
+            			
+            			
+            			cStars[k].setRadius(r(mStar,canvas.getWidth(),canvas.getHeight()));
+            			cStars[k].setLayoutX(x);
+            			cStars[k].setLayoutY(y);
+        				
+        			}
+        			
         			//calculate the sun's chart coordinates and radius
         			Sun sun = new Sun(d(calendar));
         			x = x(sun.getRA())*canvas.getWidth()/chartWidth;
