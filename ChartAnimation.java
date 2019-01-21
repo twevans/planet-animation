@@ -25,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+
 public class ChartAnimation extends Application{
 	
 	private int chartWidth = 1080; 
@@ -204,6 +205,7 @@ public class ChartAnimation extends Application{
             			cStars[k].setRadius(r(mStar,canvas.getWidth(),canvas.getHeight()));
             			cStars[k].setLayoutX(x);
             			cStars[k].setLayoutY(y);
+            			cStars[k].toBack();
         				
         			}
         			
