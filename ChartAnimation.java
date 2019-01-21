@@ -25,7 +25,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
 public class ChartAnimation extends Application{
 	
 	private int chartWidth = 1080; 
@@ -42,9 +41,6 @@ public class ChartAnimation extends Application{
     private double y;
     private Circle[] ballP = new Circle[7];
     private Circle[] cEcliptic = new Circle[300];
-    //private Circle[] cUpperZodiac = new Circle[200];
-    //private Circle[] cLowerZodiac = new Circle[200];
-    //private int zShift = 30;
     private Circle[] cStars;
     private Text[] tPlanets = new Text[7];
     private int fontSize = 15;
@@ -54,12 +50,10 @@ public class ChartAnimation extends Application{
     private Scene scene0, scene;
     private boolean runIndicator = false;
     
-    
     @Override
     public void start(Stage stage) throws SQLException   {
     	
-    	
-		Star stars = new Star();
+    	Star stars = new Star();
 		List<Double> raStars = stars.getRA();
 		List<Double> decStars = stars.getDec();	
 		cStars = new Circle[raStars.size()];
@@ -112,11 +106,6 @@ public class ChartAnimation extends Application{
 			cEcliptic[k] = new Circle(mEcliptic, Color.YELLOW);
 			canvas.getChildren().add(cEcliptic[k]);
 			
-			//cUpperZodiac[k] = new Circle(mEcliptic, Color.YELLOW);
-			//canvas.getChildren().add(cUpperZodiac[k]);
-			
-			//cLowerZodiac[k] = new Circle(mEcliptic, Color.YELLOW);
-			//canvas.getChildren().add(cLowerZodiac[k]);
 		}
         
         for(int k=0; k<raStars.size(); k++) {
@@ -180,27 +169,14 @@ public class ChartAnimation extends Application{
         				cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
         				cEcliptic[k].toBack();
         				
-        				//cUpperZodiac[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
-        				//cUpperZodiac[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI))-zShift);
-        				//cUpperZodiac[k].toBack();
         				
-        				//cLowerZodiac[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
-        				//cLowerZodiac[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI))+zShift);
-        				//cLowerZodiac[k].toBack();
         			}
         			
         			// calculate the positions of the background stars
         			for(int k=0; k<raStars.size(); k++) {
         				
-        				
-        				
         				x = x(raStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
             			y = y(decStars.get(k))*canvas.getHeight()/chartHeight;
-            			
-            			//System.out.println(x(raStars.get(k))*canvas.getWidth()/chartWidth);
-            			//System.out.println(y(decStars.get(k))*canvas.getHeight()/chartHeight);
-            			
-            			
             			
             			cStars[k].setRadius(r(mStar,canvas.getWidth(),canvas.getHeight()));
             			cStars[k].setLayoutX(x);
