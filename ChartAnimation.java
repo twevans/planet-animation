@@ -204,7 +204,7 @@ public class ChartAnimation extends Application{
         			ballM.toFront();
             	
         			//calculate the coordinates and radii of the planets
-        			Planet[] planets = calcPlanets(d(calendar), sun.getX(), sun.getY(), sun.getZ());
+        			Planet[] planets = Planet.calcPlanets(d(calendar), sun.getX(), sun.getY(), sun.getZ());
         			int j = 0;
         			for (Planet p : planets) {
         			
@@ -258,29 +258,7 @@ public class ChartAnimation extends Application{
     	return r;
     }
     
-    private Planet[] calcPlanets(double d, double sx, double sy, double sz){
-    	
-    	Planet mercury   = new Planet(d, "Mercury", Planet.mercury, Planet.mercuryDot, sx, sy, sz);
-		Planet venus     = new Planet(d, "Venus", Planet.venus, Planet.venusDot, sx, sy, sz);
-    	Planet mars      = new Planet(d, "Mars", Planet.mars, Planet.marsDot, sx, sy, sz);
-    	Planet jupiter   = new Planet(d, "Jupiter", Planet.jupiter, Planet.jupiterDot, sx, sy, sz);
-    	Planet saturn    = new Planet(d, "Saturn", Planet.saturn, Planet.saturnDot, sx, sy, sz);
-    	Planet uranus    = new Planet(d, "Uranus", Planet.uranus, Planet.uranusDot, sx, sy, sz);
-    	Planet neptune   = new Planet(d, "Neptune", Planet.neptune, Planet.neptuneDot, sx, sy, sz);
-    	
-    	Planet[] pp = {mercury, venus, mars, jupiter, saturn, uranus, neptune};
-    	
-    	jupiter.setM(jupiter.getM(), saturn.getM(), uranus.getM());
-		saturn.setM(jupiter.getM(), saturn.getM(), uranus.getM());
-		uranus.setM(jupiter.getM(), saturn.getM(), uranus.getM());
-		
-		jupiter.adjustJLong();
-		saturn.adjustSLong();
-		saturn.adjustSLat();
-		uranus.adjustULong();
-    	
-		return pp;
-    }
+    
     
     private double d(Calendar c){
     	

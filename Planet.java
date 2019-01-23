@@ -95,6 +95,22 @@ public class Planet{
 		Mu = d3;
 	}
 	
+	public double getM(){
+		return M;
+	}
+	
+	public double getRA(){
+		return rA;
+	}
+	
+	public double getDec(){
+		return dec;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
 	public void adjustJLong() {
 		jLongTerms[0] = -0.332*Math.sin((2*Mj-5*Ms-67.6)/radeg);
 		jLongTerms[1] = -0.056*Math.sin((2*Mj-2*Ms+21.0)/radeg);
@@ -141,19 +157,29 @@ public class Planet{
 		double rgeoc = Math.sqrt(xegeoc*xegeoc+yegeoc*yegeoc+zegeoc*zegeoc);
 	}
 	
-	public double getM(){
-		return M;
-	}
+	public static Planet[] calcPlanets(double d, double sx, double sy, double sz){
+    	
+    	Planet mercury   = new Planet(d, "Mercury", Planet.mercury, Planet.mercuryDot, sx, sy, sz);
+		Planet venus     = new Planet(d, "Venus", Planet.venus, Planet.venusDot, sx, sy, sz);
+    	Planet mars      = new Planet(d, "Mars", Planet.mars, Planet.marsDot, sx, sy, sz);
+    	Planet jupiter   = new Planet(d, "Jupiter", Planet.jupiter, Planet.jupiterDot, sx, sy, sz);
+    	Planet saturn    = new Planet(d, "Saturn", Planet.saturn, Planet.saturnDot, sx, sy, sz);
+    	Planet uranus    = new Planet(d, "Uranus", Planet.uranus, Planet.uranusDot, sx, sy, sz);
+    	Planet neptune   = new Planet(d, "Neptune", Planet.neptune, Planet.neptuneDot, sx, sy, sz);
+    	
+    	Planet[] pp = {mercury, venus, mars, jupiter, saturn, uranus, neptune};
+    	
+    	jupiter.setM(jupiter.getM(), saturn.getM(), uranus.getM());
+		saturn.setM(jupiter.getM(), saturn.getM(), uranus.getM());
+		uranus.setM(jupiter.getM(), saturn.getM(), uranus.getM());
+		
+		jupiter.adjustJLong();
+		saturn.adjustSLong();
+		saturn.adjustSLat();
+		uranus.adjustULong();
+    	
+		return pp;
+    }
 	
-	public double getRA(){
-		return rA;
-	}
 	
-	public double getDec(){
-		return dec;
-	}
-	
-	public String getName(){
-		return name;
-	}
 }
