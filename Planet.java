@@ -10,7 +10,7 @@ public class Planet{
 	public static final double[] mercuryDot = {3.24587*Math.pow(10,-5), 5.0*Math.pow(10,-8), 1.01444*Math.pow(10,-5), 0.0, 5.59*Math.pow(10,-10), 4.0923344368};
 	public static final double[] venus      = {76.6799, 3.3946, 54.8910, 0.723330, 0.006773, 48.052};
 	public static final double[] venusDot   = {2.46590*Math.pow(10,-5), 2.75*Math.pow(10,-8), 1.38374*Math.pow(10,-5), 0.0, -1.302*Math.pow(10,-9), 1.6021302244};
-	public static final double[] mars	   = {49.5574, 1.8497, 286.5016, 1.523688, 0.093405, 18.6021};
+	public static final double[] mars	    = {49.5574, 1.8497, 286.5016, 1.523688, 0.093405, 18.6021};
 	public static final double[] marsDot    = {2.11081*Math.pow(10,-5), -1.78*Math.pow(10,-8), 2.92961*Math.pow(10,-5), 0.0, 2.516*Math.pow(10,-9), 0.5240207766};
 	public static final double[] jupiter    = {100.4542, 1.3030, 273.8777, 5.20256, 0.048498, 19.8950};
 	public static final double[] jupiterDot = {2.76854*Math.pow(10,-5), -1.557*Math.pow(10,-7), 1.64505*Math.pow(10,-5), 0.0, 4.469*Math.pow(10,-9), 0.0830853001};

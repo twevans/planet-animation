@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="573.0" prefWidth="587.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="animation.ChartFormController2">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="New" />
+            <MenuItem mnemonicParsing="false" text="Open…" />
+            <Menu mnemonicParsing="false" text="Open Recent" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem mnemonicParsing="false" text="Save" />
+            <MenuItem mnemonicParsing="false" text="Save As…" />
+            <MenuItem mnemonicParsing="false" text="Revert" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Preferences…" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Undo" />
+            <MenuItem mnemonicParsing="false" text="Redo" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Cut" />
+            <MenuItem mnemonicParsing="false" text="Copy" />
+            <MenuItem mnemonicParsing="false" text="Paste" />
+            <MenuItem mnemonicParsing="false" text="Delete" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Select All" />
+            <MenuItem mnemonicParsing="false" text="Unselect All" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="553.0" prefWidth="579.0" VBox.vgrow="ALWAYS">
+      <children>
+            <DatePicker fx:id="startDate" layoutX="197.0" layoutY="14.0" />
+            <ComboBox fx:id="speedBox" layoutX="197.0" layoutY="105.0" prefHeight="27.0" prefWidth="194.0" />
+            <VBox layoutX="205.0" layoutY="158.0" prefHeight="270.0" prefWidth="194.0" spacing="10.0">
+               <children>
+                  <RadioButton fx:id="sunIndicator" mnemonicParsing="false" prefWidth="48.0" text="Sun" />
+                  <RadioButton fx:id="moonIndicator" mnemonicParsing="false" text="Moon" />
+                  <RadioButton fx:id="mercuryIndicator" mnemonicParsing="false" text="Mercury" />
+                  <RadioButton fx:id="venusIndicator" mnemonicParsing="false" text="Venus" />
+                  <RadioButton fx:id="marsIndicator" mnemonicParsing="false" text="Mars" />
+                  <RadioButton fx:id="jupiterIndicator" mnemonicParsing="false" text="Jupiter" />
+                  <RadioButton fx:id="saturnIndicator" mnemonicParsing="false" text="Saturn" />
+                  <RadioButton fx:id="uranusIndicator" mnemonicParsing="false" text="Uranus" />
+                  <RadioButton fx:id="neptuneIndicator" mnemonicParsing="false" text="Neptune" />
+                  <RadioButton fx:id="starsIndicator" mnemonicParsing="false" text="Background Stars" />
+               </children>
+            </VBox>
+            <Label layoutX="109.0" layoutY="19.0" text="Start Date:" />
+            <Label layoutX="133.0" layoutY="110.0" text="Speed:" />
+            <Label layoutX="124.0" layoutY="158.0" text="Objects:" />
+            <Button fx:id="runButton" layoutX="225.0" layoutY="473.0" mnemonicParsing="false" onAction="#handleRunButtonAction" prefHeight="37.0" prefWidth="153.0" text="Run Animation" />
+            <Label layoutX="108.0" layoutY="67.0" text="Start Time:" />
+            <ComboBox fx:id="hourBox" layoutX="197.0" layoutY="62.0" prefHeight="27.0" prefWidth="85.0" />
+            <Label layoutX="290.0" layoutY="61.0" text=":">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="minuteBox" layoutX="306.0" layoutY="62.0" prefHeight="27.0" prefWidth="85.0" />
+      </children>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+    </AnchorPane>
+  </children>
+</VBox>
