@@ -162,6 +162,16 @@ public class ChartFormController2 {
 		calendar = new GregorianCalendar();
     	date = java.sql.Date.valueOf(startDate.getValue());
         calendar.setTime(date);
+        
+        String hString = (String) hourBox.getValue();
+        String mString = (String) minuteBox.getValue();
+        
+        int hInt = Integer.parseInt(hString);
+        int mInt = Integer.parseInt(mString);
+        
+        calendar.add(Calendar.HOUR_OF_DAY, hInt);
+        calendar.add(Calendar.MINUTE, mInt);
+        
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = dateFormat.format(date);
         
@@ -406,6 +416,9 @@ public class ChartFormController2 {
         int minute = c.get(Calendar.MINUTE);
         int dInt   = 367*year - 7*(year+(month+9)/12)/4 + 275*month/9 + day - 730530;
         double d   = dInt + (hour + minute/60.0)/24.0;
+        
+        //System.out.println(hour);
+        //System.out.println(minute);
     	
         return d;
     }
