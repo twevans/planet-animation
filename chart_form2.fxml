@@ -70,7 +70,6 @@
                   <RadioButton fx:id="saturnIndicator" mnemonicParsing="false" text="Saturn" />
                   <RadioButton fx:id="uranusIndicator" mnemonicParsing="false" text="Uranus" />
                   <RadioButton fx:id="neptuneIndicator" mnemonicParsing="false" text="Neptune" />
-                  <RadioButton fx:id="starsIndicator" mnemonicParsing="false" text="Background Stars" />
                </children>
             </VBox>
             <Label layoutX="109.0" layoutY="19.0" text="Start Date:" />
@@ -85,6 +84,8 @@
                </font>
             </Label>
             <ComboBox fx:id="minuteBox" layoutX="306.0" layoutY="62.0" prefHeight="27.0" prefWidth="85.0" />
+            <Label layoutX="65.0" layoutY="428.0" text="Show Planet Trails:" />
+            <ComboBox fx:id="trailsBox" layoutX="202.0" layoutY="423.0" prefHeight="27.0" prefWidth="59.0" />
       </children>
          <padding>
             <Insets bottom="10.0" />

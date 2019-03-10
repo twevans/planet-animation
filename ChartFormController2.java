@@ -72,6 +72,7 @@ public class ChartFormController2 {
 			"40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"
 			);
 
+	ObservableList<String> trailsList = FXCollections.observableArrayList("N","Y");
 	
     @FXML
     private DatePicker startDate;
@@ -113,7 +114,7 @@ public class ChartFormController2 {
     private RadioButton neptuneIndicator;
     
     @FXML
-    private RadioButton starsIndicator;
+    private ComboBox trailsBox;
 
     @FXML
     private Button runButton;
@@ -133,6 +134,9 @@ public class ChartFormController2 {
     	
     	minuteBox.setValue("00");
     	minuteBox.setItems(minuteList);
+    	
+    	trailsBox.setValue("N");
+    	trailsBox.setItems(trailsList);
     }
 
     @FXML
@@ -351,12 +355,24 @@ public class ChartFormController2 {
         					x = x(p.getRA())*canvas.getWidth()/chartWidth;
         					y = y(p.getDec())*canvas.getHeight()/chartHeight;
                 	
-        					ballP[j].setRadius(r(mPlanet,canvas.getWidth(),canvas.getHeight()));
-        					ballP[j].setLayoutX(x);
-        					ballP[j].setLayoutY(y);
-        					tPlanets[j].setX(x+2*mPlanet);
-        					tPlanets[j].setY(y+8*mPlanet);
-        					tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
+        					if(trailsBox.getValue()=="N") {
+        						ballP[j].setRadius(r(mPlanet,canvas.getWidth(),canvas.getHeight()));
+        						ballP[j].setLayoutX(x);
+        						ballP[j].setLayoutY(y);
+        						tPlanets[j].setX(x+2*mPlanet);
+        						tPlanets[j].setY(y+8*mPlanet);
+        						tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
+        					} else {
+        						Circle ballP0 = new Circle(mPlanet/2, Color.RED);
+        						canvas.getChildren().add(ballP0);
+        						ballP0.setRadius(r(mPlanet/2,canvas.getWidth(),canvas.getHeight()));
+        						ballP0.setLayoutX(x);
+        						ballP0.setLayoutY(y);
+        						tPlanets[j].setX(x+2*mPlanet);
+        						tPlanets[j].setY(y+8*mPlanet);
+        						tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
+        						
+        					}
         				}
         				
         				j++;
