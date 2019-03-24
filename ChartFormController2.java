@@ -75,7 +75,7 @@ public class ChartFormController2 {
 
 	ObservableList<String> trailsList = FXCollections.observableArrayList("N","Y");
 	
-	ObservableList<String> coordsList = FXCollections.observableArrayList("Ecliptic","Equatorial");
+	ObservableList<String> coordsList = FXCollections.observableArrayList("Equatorial","Ecliptic","Galactic");
 	
     @FXML
     private DatePicker startDate;
@@ -144,7 +144,7 @@ public class ChartFormController2 {
     	trailsBox.setValue("N");
     	trailsBox.setItems(trailsList);
     	
-    	coordsBox.setValue("Ecliptic");
+    	coordsBox.setValue("Equatorial");
     	coordsBox.setItems(coordsList);
     	
     	
