@@ -8,6 +8,7 @@ public class Sun {
 	private double x;
 	private double y;
 	private double z;
+	private double lS;
 	
 	public Sun(double d){
 		double w = rev(282.9404 + 4.70935 * Math.pow(10,-5) * d); 						// longitude of perihelion
@@ -22,11 +23,11 @@ public class Sun {
 		y = Math.sin(eA/radeg) * Math.sqrt(1-e*e);
 		double r = Math.sqrt(x*x + y*y);
 		double v = rev(radeg*Math.atan2(y,x));
-		double lS = rev(v + w);															// longitude of the sun
-		x = r * Math.cos(lS/radeg);
+		lS = rev(v + w);															// longitude of the sun
+		x = r * Math.cos(lS/radeg);														// ecliptic rectangular geocentric coordinates
 		y = r * Math.sin(lS/radeg);
 		z = 0.0; 
-		double yEq = y*Math.cos(oE/radeg) - z*Math.sin(oE/radeg);
+		double yEq = y*Math.cos(oE/radeg) - z*Math.sin(oE/radeg);						// equatorial rectangular geocentric coordinates
 		double zEq = y*Math.sin(oE/radeg) + z*Math.cos(oE/radeg);
 		
 		rA = rev(radeg * Math.atan2(yEq,x));											// right ascension of the sun
@@ -63,5 +64,9 @@ public class Sun {
 	
 	public double getZ(){
 		return z;
+	}
+	
+	public double getLS() {
+		return lS;
 	}
 }

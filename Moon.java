@@ -3,6 +3,8 @@ package animation;
 public class Moon {
 	private double rA;
 	private double dec;
+	private double lon;
+	private double lat;
 	
 	public Moon (double d, double lS, double mS) {
 		double n = rev(125.1228 - 0.0529538083 * d); 	// longitude of the ascending node
@@ -27,8 +29,8 @@ public class Moon {
 		double xEc = r * ( Math.cos(n/radeg) * Math.cos((v+w)/radeg) - Math.sin(n/radeg) * Math.sin((v+w)/radeg) * Math.cos(i/radeg) );
 		double yEc = r * ( Math.sin(n/radeg) * Math.cos((v+w)/radeg) + Math.cos(n/radeg) * Math.sin((v+w)/radeg) * Math.cos(i/radeg) );
 		double zEc = r * Math.sin((v+w)/radeg) * Math.sin(i/radeg);
-		double lon = rev(radeg*Math.atan2(yEc, xEc));
-		double lat = rev(radeg*Math.atan2(zEc, Math.sqrt(xEc*xEc+yEc*yEc)));
+		lon = rev(radeg*Math.atan2(yEc, xEc));
+		lat = rev(radeg*Math.atan2(zEc, Math.sqrt(xEc*xEc+yEc*yEc)));
 		double revLS = rev(lS);
 		double revLM = rev(n + w + m);
 		double revMS = rev(mS);
@@ -69,12 +71,12 @@ public class Moon {
 		}
 		
 		double pDistSum = pDist[0] + pDist[1];
-		double lon2 = lon + pLongSum; 		
-		double lat2 = lat + pLatSum - 360; 
+		lon = lon + pLongSum; 		
+		lat = lat + pLatSum - 360; 
 		double dist2 = r + pDistSum; 		
-		double x2 = Math.cos(lon2/radeg) * Math.cos(lat2/radeg);
-    	double y2 = Math.sin(lon2/radeg) * Math.cos(lat2/radeg);
-    	double z2 = Math.sin(lat2/radeg);
+		double x2 = Math.cos(lon/radeg) * Math.cos(lat/radeg);
+    	double y2 = Math.sin(lon/radeg) * Math.cos(lat/radeg);
+    	double z2 = Math.sin(lat/radeg);
     	double oEcl = 23.4406;
     	double xe = x2;
     	double ye = y2*Math.cos(oEcl/radeg) - z2*Math.sin(oEcl/radeg);
@@ -101,5 +103,18 @@ public class Moon {
 	
 	public double getDec(){
 		return dec;
+	}
+	
+	public double getLon(){
+		return lon;
+	}
+	
+	public double getLat(){
+		if(lat > -180) {
+			return lat;
+		} else {
+			return lat + 360.0;
+		}
+		
 	}
 }

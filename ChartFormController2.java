@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -74,6 +75,8 @@ public class ChartFormController2 {
 
 	ObservableList<String> trailsList = FXCollections.observableArrayList("N","Y");
 	
+	ObservableList<String> coordsList = FXCollections.observableArrayList("Ecliptic","Equatorial");
+	
     @FXML
     private DatePicker startDate;
 
@@ -115,17 +118,20 @@ public class ChartFormController2 {
     
     @FXML
     private ComboBox trailsBox;
+    
+    @FXML
+    private ComboBox coordsBox;
 
     @FXML
     private Button runButton;
     
-    //private RadioButton[] planetIndicators = {mercuryIndicator, venusIndicator, marsIndicator, jupiterIndicator, 
-    //		saturnIndicator, uranusIndicator, neptuneIndicator};
     
-    //private Boolean[] planetIndicators = new Boolean[7];
     
     @FXML
     private void initialize() {
+    	
+    	startDate.setValue(LocalDate.now());
+    	
     	speedBox.setValue("Slow Animation");
     	speedBox.setItems(speedList);
     	
@@ -137,6 +143,11 @@ public class ChartFormController2 {
     	
     	trailsBox.setValue("N");
     	trailsBox.setItems(trailsList);
+    	
+    	coordsBox.setValue("Ecliptic");
+    	coordsBox.setItems(coordsList);
+    	
+    	
     }
 
     @FXML
@@ -160,9 +171,13 @@ public class ChartFormController2 {
         Star stars = new Star();
 		List<Double> raStars = stars.getRA();
 		List<Double> decStars = stars.getDec();	
+		List<Double> lonStars = stars.getLon();
+		List<Double> latStars = stars.getLat();	
+		
+		
 		cStars = new Circle[raStars.size()];
     	
-    	//date = new Date();
+    	
 		calendar = new GregorianCalendar();
     	date = java.sql.Date.valueOf(startDate.getValue());
         calendar.setTime(date);
@@ -220,7 +235,7 @@ public class ChartFormController2 {
         
         for(int k=0; k<ballP.length; k++) {
         	
-        	//System.out.println(planetIndicators[k]);
+        	
         	if(planetIndicators[k]==true) {
         		ballP[k] = new Circle(mPlanet, Color.RED);
         		canvas.getChildren().add(ballP[k]);
@@ -245,9 +260,7 @@ public class ChartFormController2 {
         stage.setTitle("Star Chart Animation");
         
         runIndicator = true;
-        //date = new Date();
-        //calendar = new GregorianCalendar();
-        //calendar.setTime(date);
+        
         stage.setScene(scene);
             
         
@@ -298,20 +311,26 @@ public class ChartFormController2 {
         			equator.toBack();
         		
         			//draw the ecliptic
-        			for(int k=0; k<cEcliptic.length; k++) {
-        				cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
-        				cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
-        				cEcliptic[k].toBack();
+        			if(coordsBox.getValue()=="Equatorial") {
+        				for(int k=0; k<cEcliptic.length; k++) {
+        					cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
+        					cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
+        					cEcliptic[k].toBack();
         				
-        				
+        				}	
         			}
         			
         			// calculate the positions of the background stars
         			for(int k=0; k<raStars.size(); k++) {
-        				
+        				if(coordsBox.getValue()=="Equatorial") {
         				x = x(raStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
             			y = y(decStars.get(k))*canvas.getHeight()/chartHeight;
-            			
+        				} else {
+        					x = x(lonStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
+                			y = y(latStars.get(k))*canvas.getHeight()/chartHeight;
+        					
+        				}
+        				
             			cStars[k].setRadius(r(mStar,canvas.getWidth(),canvas.getHeight()));
             			cStars[k].setLayoutX(x);
             			cStars[k].setLayoutY(y);
@@ -322,27 +341,43 @@ public class ChartFormController2 {
         			//calculate the sun's chart coordinates and radius
         			Sun sun = new Sun(d(calendar));
         			if(sunIndicator.isSelected()) {
-        				x = x(sun.getRA())*canvas.getWidth()/chartWidth;
-        				y = y(sun.getDec())*canvas.getHeight()/chartHeight;
+        				if(coordsBox.getValue()=="Equatorial") {
+        					x = x(sun.getRA())*canvas.getWidth()/chartWidth; 	// equatorial coordinates
+        					y = y(sun.getDec())*canvas.getHeight()/chartHeight; 
+        				} else {
+        					x = x(sun.getLS())*canvas.getWidth()/chartWidth;  // ecliptic coordinates
+        					y = canvas.getHeight()/2; 						
+        				}
+        				
         				ball.setRadius(r(mSun,canvas.getWidth(),canvas.getHeight()));
         				ball.setLayoutX(x);
         				ball.setLayoutY(y);
         				ball.toFront();
         			}
-        			//if(sunIndicator.equals(0)) {
-        			//		canvas.getChildren().remove(ball);
-        			//}
+        			
             	
         			//calculate the moon's chart coordinates and radius
         			if(moonIndicator.isSelected()) {
-        				//System.out.println(moonIndicator.isSelected());
         				Moon moon = new Moon (d(calendar), sun.getML() , sun.getMA());
-        				x = x(moon.getRA())*canvas.getWidth()/chartWidth;
-        				y = y(moon.getDec())*canvas.getHeight()/chartHeight;
+        				if(coordsBox.getValue()=="Equatorial") {
+        					
+        					x = x(moon.getRA())*canvas.getWidth()/chartWidth;
+        					y = y(moon.getDec())*canvas.getHeight()/chartHeight;
+        					
+        				} else {
+        					
+        					x = x(moon.getLon())*canvas.getWidth()/chartWidth;
+        					y = y(moon.getLat())*canvas.getHeight()/chartHeight;
+        					
+        					//System.out.println(moon.getLon());
+        					//System.out.println(moon.getLat());
+        					
+        				}
+        				
         				ballM.setRadius(r(mMoon,canvas.getWidth(),canvas.getHeight()));
-        				ballM.setLayoutX(x);
-        				ballM.setLayoutY(y);
-        				ballM.toFront();
+    					ballM.setLayoutX(x);
+    					ballM.setLayoutY(y);
+    					ballM.toFront();
         			}
             	
         			//calculate the coordinates and radii of the planets
@@ -352,8 +387,19 @@ public class ChartFormController2 {
         			
         				if(planetIndicators[j]==true) {
         					p.convertToGeocentric();
-        					x = x(p.getRA())*canvas.getWidth()/chartWidth;
-        					y = y(p.getDec())*canvas.getHeight()/chartHeight;
+        					if(coordsBox.getValue()=="Equatorial") {
+        						x = x(p.getRA())*canvas.getWidth()/chartWidth;
+        						y = y(p.getDec())*canvas.getHeight()/chartHeight;
+        					} else {
+        						x = x(p.getLon())*canvas.getWidth()/chartWidth;
+            					y = y(p.getLat())*canvas.getHeight()/chartHeight;	
+            					
+            					//System.out.println("lon = " + p.getLon());
+            					//System.out.println("lat = " + p.getLat());
+        						
+        					}
+        					
+        					
                 	
         					if(trailsBox.getValue()=="N") {
         						ballP[j].setRadius(r(mPlanet,canvas.getWidth(),canvas.getHeight()));
@@ -378,7 +424,7 @@ public class ChartFormController2 {
         				j++;
         			}
         			
-        			//System.out.println(speedBox.getValue());
+        			
         		
         			
         			if(speedBox.getValue()=="Slow Animation") {
@@ -433,8 +479,7 @@ public class ChartFormController2 {
         int dInt   = 367*year - 7*(year+(month+9)/12)/4 + 275*month/9 + day - 730530;
         double d   = dInt + (hour + minute/60.0)/24.0;
         
-        //System.out.println(hour);
-        //System.out.println(minute);
+        
     	
         return d;
     }

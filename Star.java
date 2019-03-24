@@ -10,8 +10,10 @@ import java.util.List;
 
 public class Star {
 	
-	List<Double> raList = new ArrayList<Double>();	
+	List<Double> raList  = new ArrayList<Double>();	
     List<Double> decList = new ArrayList<Double>();	
+    List<Double> lonList = new ArrayList<Double>();
+    List<Double> latList = new ArrayList<Double>();
     //List<Double> mList  = new ArrayList<Double>();
 
 	public Star() throws SQLException {
@@ -27,8 +29,14 @@ public class Star {
     String query =
 
         "select STAR_ID, STAR_NAME, CONSTELLATION, RA, DN, MAGNITUDE " +
+        
+		"from " + dbName + ".STARS";
         	
-        "from " + dbName + ".STARS";
+        //"from " + dbName + ".STARS" + " where CONSTELLATION = 'Bootes'";
+        
+		
+        
+        
 
 	ResultSet rs = stmt.executeQuery(query);
 		
@@ -39,12 +47,31 @@ public class Star {
 	    //String constellation = rs.getString("CONSTELLATION");
 	    double ra = rs.getDouble("RA");
 	    double dn = rs.getDouble("DN");
+	    double raRadians = 15*ra/Planet.radeg;
+	    double dnRadians = dn/Planet.radeg;
+	    double radhour = 12/Math.PI;
+	    double obleclrad = Planet.oblecl/Planet.radeg;
 	    //double magnitude = rs.getDouble("MAGNITUDE");
 
 	    raList.add(ra);
 	    decList.add(dn);
 	    //mList.add(magnitude);
-	
+	     
+	    double sinLat = Math.sin(dnRadians)*Math.cos(obleclrad) - Math.cos(dnRadians)*Math.sin(obleclrad)*Math.sin(raRadians);
+	    double latRadians = Math.asin(sinLat);
+	    double latDegrees = latRadians*Planet.radeg;
+	    
+	    double cosLon = Math.cos(raRadians)*Math.cos(dnRadians)/Math.cos(latRadians);
+	    double lonRadians = Math.acos(cosLon);
+	    double lonHours = lonRadians*radhour;
+	    
+	    
+	    if(ra > 12) {
+	    	lonHours = 24 - lonHours;
+	    }
+	    
+	    lonList.add(lonHours);
+	    latList.add(latDegrees);
 	}
 
 	stmt.close();
@@ -57,5 +84,14 @@ public class Star {
 	public List<Double> getDec(){
 		return decList;
 	}
+	
+	public List<Double> getLon(){
+		return lonList;
+	}
+	
+	public List<Double> getLat(){
+		return latList;
+	}
+	
 	
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="573.0" prefWidth="587.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="animation.ChartFormController2">
+<VBox prefHeight="614.0" prefWidth="566.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="animation.ChartFormController2">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -75,7 +75,7 @@
             <Label layoutX="109.0" layoutY="19.0" text="Start Date:" />
             <Label layoutX="133.0" layoutY="110.0" text="Speed:" />
             <Label layoutX="124.0" layoutY="158.0" text="Objects:" />
-            <Button fx:id="runButton" layoutX="225.0" layoutY="473.0" mnemonicParsing="false" onAction="#handleRunButtonAction" prefHeight="37.0" prefWidth="153.0" text="Run Animation" />
+            <Button fx:id="runButton" layoutX="226.0" layoutY="520.0" mnemonicParsing="false" onAction="#handleRunButtonAction" prefHeight="37.0" prefWidth="153.0" text="Run Animation" />
             <Label layoutX="108.0" layoutY="67.0" text="Start Time:" />
             <ComboBox fx:id="hourBox" layoutX="197.0" layoutY="62.0" prefHeight="27.0" prefWidth="85.0" />
             <Label layoutX="290.0" layoutY="61.0" text=":">
@@ -86,6 +86,8 @@
             <ComboBox fx:id="minuteBox" layoutX="306.0" layoutY="62.0" prefHeight="27.0" prefWidth="85.0" />
             <Label layoutX="65.0" layoutY="428.0" text="Show Planet Trails:" />
             <ComboBox fx:id="trailsBox" layoutX="202.0" layoutY="423.0" prefHeight="27.0" prefWidth="59.0" />
+            <Label layoutX="62.0" layoutY="482.0" prefHeight="17.0" prefWidth="125.0" text="Coordinate System:" />
+            <ComboBox fx:id="coordsBox" layoutX="201.0" layoutY="477.0" prefHeight="27.0" prefWidth="194.0" />
       </children>
          <padding>
             <Insets bottom="10.0" />

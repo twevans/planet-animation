@@ -21,8 +21,9 @@ public class Planet{
 	public static final double[] neptune    = {131.7806, 1.7700, 272.8461, 30.05826, 0.008606, 260.2471};
 	public static final double[] neptuneDot = {3.0173*Math.pow(10,-5), -2.55*Math.pow(10,-7), -6.027*Math.pow(10,-6), 3.313*Math.pow(10,-8), 2.15*Math.pow(10,-9), 0.005995147};
 	
-	private double radeg = 180/Math.PI;
-	private double oblecl = 23.4406;
+	public static final double radeg = 180/Math.PI;
+	public static final double oblecl = 23.4406;
+	
 	private double lon;
 	private double lat;
 	private double M;
@@ -70,8 +71,8 @@ public class Planet{
 		xeclip = r * ( Math.cos(N/radeg) * Math.cos((v+w)/radeg) - Math.sin(N/radeg) * Math.sin((v+w)/radeg) * Math.cos(i/radeg) );
 		yeclip = r * ( Math.sin(N/radeg) * Math.cos((v+w)/radeg) + Math.cos(N/radeg) * Math.sin((v+w)/radeg) * Math.cos(i/radeg) );
 		zeclip = r * Math.sin((v+w)/radeg) * Math.sin(i/radeg);
-		double lon = rev(radeg*Math.atan2(yeclip, xeclip));
-		double lat = rev(radeg*Math.atan2(zeclip, Math.sqrt(xeclip*xeclip+yeclip*yeclip)));
+		lon = rev(radeg*Math.atan2(yeclip, xeclip));
+		lat = rev(radeg*Math.atan2(zeclip, Math.sqrt(xeclip*xeclip+yeclip*yeclip)));
 		
 	}
 
@@ -149,6 +150,8 @@ public class Planet{
 		double xgeoc = sx + xeclip;
 		double ygeoc = sy + yeclip;
 		double zgeoc = sz + zeclip;
+		lon  = rev(radeg*Math.atan2( ygeoc, xgeoc ));
+		lat  = radeg*Math.atan2( zgeoc, Math.sqrt(xgeoc*xgeoc+ygeoc*ygeoc) ); 
 		double xegeoc = xgeoc;
 		double yegeoc = ygeoc*Math.cos(oblecl/radeg) - zgeoc*Math.sin(oblecl/radeg);
 		double zegeoc = ygeoc*Math.sin(oblecl/radeg) + zgeoc*Math.cos(oblecl/radeg);
@@ -180,6 +183,18 @@ public class Planet{
     	
 		return pp;
     }
+	
+	public double getLon(){
+		return lon;
+	}
+	
+	public double getLat(){
+		if(lat > 180) {
+			return lat - 360;
+		} else {
+			return lat;
+		}
+	}
 	
 	
 }
