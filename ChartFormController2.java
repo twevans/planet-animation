@@ -173,6 +173,8 @@ public class ChartFormController2 {
 		List<Double> decStars = stars.getDec();	
 		List<Double> lonStars = stars.getLon();
 		List<Double> latStars = stars.getLat();	
+		List<Double> galLonStars = stars.getGalLon();
+		List<Double> galLatStars = stars.getGalLat();	
 		
 		
 		cStars = new Circle[raStars.size()];
@@ -325,9 +327,13 @@ public class ChartFormController2 {
         				if(coordsBox.getValue()=="Equatorial") {
         				x = x(raStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
             			y = y(decStars.get(k))*canvas.getHeight()/chartHeight;
-        				} else {
+        				} else if (coordsBox.getValue()=="Ecliptic") {
         					x = x(lonStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
                 			y = y(latStars.get(k))*canvas.getHeight()/chartHeight;
+        					
+        				} else {
+        					x = x(galLonStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
+                			y = y(galLatStars.get(k))*canvas.getHeight()/chartHeight;
         					
         				}
         				
