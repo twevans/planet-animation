@@ -61,7 +61,7 @@ public class ChartFormController2 {
     private int pFontSize = 12;
     private Date date;
     private Calendar calendar;
-    private Scene scene0, scene;
+    private Scene scene;
     private boolean runIndicator = false;
 	
 	ObservableList<String> speedList = FXCollections.observableArrayList("Static Picture","Slow Animation","Fast Animation");
@@ -75,7 +75,8 @@ public class ChartFormController2 {
 
 	ObservableList<String> trailsList = FXCollections.observableArrayList("N","Y");
 	
-	ObservableList<String> coordsList = FXCollections.observableArrayList("Equatorial","Ecliptic","Galactic");
+	//ObservableList<String> coordsList = FXCollections.observableArrayList("Equatorial","Ecliptic","Galactic");
+	ObservableList<String> coordsList = FXCollections.observableArrayList("Equatorial","Ecliptic");
 	
     @FXML
     private DatePicker startDate;
@@ -152,6 +153,9 @@ public class ChartFormController2 {
 
     @FXML
     protected void handleRunButtonAction(ActionEvent event) throws SQLException {
+    	
+    	//System.out.println("button has been clicked");
+    	
         Window owner = runButton.getScene().getWindow();
         if(startDate.getValue()==null) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Form Error!", 
@@ -196,14 +200,7 @@ public class ChartFormController2 {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = dateFormat.format(date);
         
-        //Scene 0
-        Pane canvas0 = new Pane();
-        canvas0.setStyle("-fx-background-color: cornflowerblue;");
-        scene0 = new Scene(canvas0, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
-        Button button0 = new Button("Run");
-        canvas0.getChildren().add(button0);
-        button0.setLayoutX(canvas0.getWidth()/2);
-    	button0.setLayoutY(0.9*canvas0.getHeight());
+        
       		
         //Scene
         Pane canvas = new Pane();
@@ -300,8 +297,7 @@ public class ChartFormController2 {
         			
         			
         		
-        			button0.setLayoutX(canvas0.getWidth()/2);
-        			button0.setLayoutY(0.9*canvas0.getHeight());
+        			
         		
         			button1.setLayoutX(canvas.getWidth()/2);
         			button1.setLayoutY(0.9*canvas.getHeight());
