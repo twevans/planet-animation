@@ -154,7 +154,6 @@ public class ChartFormController2 {
     @FXML
     protected void handleRunButtonAction(ActionEvent event) throws SQLException {
     	
-    	//System.out.println("button has been clicked");
     	
         Window owner = runButton.getScene().getWindow();
         if(startDate.getValue()==null) {
@@ -171,6 +170,7 @@ public class ChartFormController2 {
         Boolean[] planetIndicators = {mercuryIndicator.isSelected(), venusIndicator.isSelected(), 
         		marsIndicator.isSelected(), jupiterIndicator.isSelected(), saturnIndicator.isSelected(), 
         		uranusIndicator.isSelected(), neptuneIndicator.isSelected()};
+        
         
         Star stars = new Star();
 		List<Double> raStars = stars.getRA();
