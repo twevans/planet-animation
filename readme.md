@@ -1,4 +1,4 @@
-This application generates animations of the movements of the sun, moon and planets along the zodiac.
+This application generates animations of the sun, moon and planets as they move through the zodiac.
 
 
 Acknowledgements / References:
