@@ -1,5 +1,8 @@
-Animations of the movements of the sun, moon and planets over time.
+This application generates animations of the movements of the sun, moon and planets along the zodiac.
 
-Acknowledgements:
 
-In this project I have used the orbital dynamics formulae presented at http://stjarnhimlen.se/
+Acknowledgements / References:
+
+1. How to compute planetary positions (http://stjarnhimlen.se/comp/ppcomp.html).
+
+2. HYG-Database (https://github.com/astronexus/HYG-Database).

@@ -2,7 +2,7 @@ package animation;
 
 import java.sql.*;
 
-public class CreateStarDB
+public class CreateStarDB2
 
 {
     public static void main(String[] args) throws SQLException
