@@ -5,4 +5,4 @@ Acknowledgements / References:
 
 1. How to compute planetary positions (http://stjarnhimlen.se/comp/ppcomp.html).
 
-2. HYG-Database (https://github.com/astronexus/HYG-Database).
+2. HYG Stellar database (https://github.com/astronexus/HYG-Database).
