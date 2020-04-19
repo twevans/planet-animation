@@ -1,76 +1,111 @@
 package animation;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 
 public class CreateStarDB2
 
 {
-    public static void main(String[] args) throws SQLException
+	
+	public static String dbName="jdbcAstronomyDB2";
+	//public static Connection con;
+	//public static Statement stmt;
+	
+    public static void main(String[] args) throws SQLException, FileNotFoundException
 
    {
    
-    	String dbName="jdbcAstronomyDB";
     	String connectionURL = "jdbc:derby:" + dbName + ";create=true";
-    	Connection con = DriverManager.getConnection(connectionURL);	
+    	//String csvFilePath = "hygdata_v3_zodiac_5.csv";
+    	String csvFilePath = "hygdata_v3_6.csv";
+    	int batchSize = 20;
+    	
+    	Connection con = DriverManager.getConnection(connectionURL);
     	Statement stmt = con.createStatement();
-    		
+        
     	try {
     		
-      		StarData d = new StarData();
-      		String[] stars = new String[182];
-      		stars = d.getData();      
-      	
-      		String createString = 
+    		String createString = 
 
             		"create table " + dbName +
             		".STARS " +
-            		"(STAR_ID integer NOT NULL, " +
-            		"STAR_NAME varchar(40) NOT NULL, " +
-            		"CONSTELLATION varchar(40) NOT NULL, " +
+            		"(ID integer NOT NULL, " +
             		"RA double NOT NULL, " +
             		"DN double NOT NULL, " +
-            		"MAGNITUDE double NOT NULL, " +        	
-            		"PRIMARY KEY (STAR_ID))";
+            		"MAG double NOT NULL, " +
+            		"CNS char(3) NOT NULL, " +
+            		"PRIMARY KEY (ID))";
 
+    		stmt.executeUpdate(createString);
+    		
+    		String sql = "INSERT INTO " + dbName + ".STARS" + "(id, ra, dn, mag, cns) VALUES (?, ?, ?, ?, ?)";
+    		
+    		PreparedStatement statement = con.prepareStatement(sql);
+    		
+    		//statement.executeUpdate(createString);
+    		
             
-            stmt.executeUpdate(createString);
-
-            for(int i=1; i<stars.length; i++){
-
-            	stmt.executeUpdate(
-
-            			"insert into " + dbName +
-            			".STARS " +
-            			stars[i]);
-
-            }
-
-    	} catch (Exception Ex) {
-    			
-    	}
-
-        String query =
-
-            		"select STAR_ID, STAR_NAME, CONSTELLATION, RA, DN, MAGNITUDE " +
+            
         	
-	       			"from " + dbName + ".STARS";
-
-        ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-
-            		int starID = rs.getInt("STAR_ID");
-            		String starName = rs.getString("STAR_NAME");
-            		String constellation = rs.getString("CONSTELLATION");
-            		double ra = rs.getDouble("RA");
-            		double dn = rs.getDouble("DN");
-            		double magnitude = rs.getDouble("MAGNITUDE");
-
-            		System.out.println(starID + "\t" + starName + "\t" + constellation + "\t" + ra + "\t" + dn + "\t" + magnitude);
-
+        	con.setAutoCommit(false);
+    		
+    		
+            BufferedReader lineReader = new BufferedReader(new FileReader(csvFilePath));
+            String lineText = null;
+            
+            int count = 0;
+            
+            lineReader.readLine();
+            
+            while ((lineText = lineReader.readLine()) != null) {
+                String[] data = lineText.split(",");
+                String id = data[0];
+                String ra = data[1];
+                String dn = data[2];
+                String mag = data[3];
+                String cns = data[4];
+ 
+                int sqlId = Integer.valueOf(id);
+                double sqlRa = Double.valueOf(ra);
+                double sqlDn = Double.valueOf(dn);
+                double sqlMag = Double.valueOf(mag);
+                
+                System.out.println(cns);
+                               
+                statement.setInt(1, sqlId);
+                statement.setDouble(2, sqlRa);
+                statement.setDouble(3, sqlDn);
+                statement.setDouble(4, sqlMag);
+                statement.setString(5, cns);
+ 
+                statement.addBatch();
+ 
+                if (count % batchSize == 0) {
+                    statement.executeBatch();
+                }
             }
+            
+            lineReader.close();
+            
 
-       stmt.close();
+    	
+        //} catch (SQLException ex) {
+          //  ex.printStackTrace();
+        //} catch (IOException ex) {
+          //  System.err.println(ex);
+        } catch (Exception ex) {
+        	
+        }
+
+    	con.commit();
+    	stmt.close();
+    	
+       
               
-   }           
+   } 
+    
+    
 }

@@ -1,5 +1,6 @@
 package animation;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -41,18 +42,24 @@ import javafx.util.Duration;
 
 public class ChartFormController2 {
 	
+	//private int chartWidth = 1080; 
+    //private int chartHeight = 500;
 	private int chartWidth = 1080; 
     private int chartHeight = 500;
+    private double chartWidth1 = 1080; 
+    private double chartHeight1 = 500;
+    
     private int rAMult = 45;
     private int decMult = 3;
     private int mSun = 8;
     private int mMoon = 8;
     private int mPlanet = 2;
-    private int mStar = 1;
+    private double mStar = 0.5;
     private int mEcliptic = 1;
     private int hourDeg = 15;
     private double x;
     private double y;
+    private double z;
     private Circle[] ballP = new Circle[7];
     private Circle[] cEcliptic = new Circle[300];
     private Circle[] cStars;
@@ -152,7 +159,7 @@ public class ChartFormController2 {
     }
 
     @FXML
-    protected void handleRunButtonAction(ActionEvent event) throws SQLException {
+    protected void handleRunButtonAction(ActionEvent event) throws SQLException, FileNotFoundException {
     	
     	
         Window owner = runButton.getScene().getWindow();
@@ -172,13 +179,14 @@ public class ChartFormController2 {
         		uranusIndicator.isSelected(), neptuneIndicator.isSelected()};
         
         
-        Star stars = new Star();
+        //Star stars = new Star();
+        Star2 stars = new Star2();
 		List<Double> raStars = stars.getRA();
 		List<Double> decStars = stars.getDec();	
 		List<Double> lonStars = stars.getLon();
 		List<Double> latStars = stars.getLat();	
-		List<Double> galLonStars = stars.getGalLon();
-		List<Double> galLatStars = stars.getGalLat();	
+		List<Double> magStars = stars.getMag();
+		//List<Double> galLatStars = stars.getGalLat();	
 		
 		
 		cStars = new Circle[raStars.size()];
@@ -287,6 +295,37 @@ public class ChartFormController2 {
         
         stage.show();
         
+     // calculate the positions and sizes of the background stars
+        
+        for(int k=0; k<raStars.size(); k++) {
+			if(coordsBox.getValue()=="Equatorial") {
+			x = x(raStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
+			y = y(decStars.get(k))*canvas.getHeight()/chartHeight;
+			} else if (coordsBox.getValue()=="Ecliptic") {
+				x = x(lonStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
+    			y = y(latStars.get(k))*canvas.getHeight()/chartHeight;
+				
+			} 
+			
+			// if the dimmest star has magnitude 6.0:
+			
+			/*
+			if(magStars.get(k)<=0.0) {
+				mStar = 2.0;
+			} else  {
+			mStar = (6-magStars.get(k))/3;
+			} 
+			*/
+			
+			mStar = (6-magStars.get(k))/3;
+			
+			
+			cStars[k].setRadius(r(mStar,canvas.getWidth(),canvas.getHeight()));
+			cStars[k].setLayoutX(x);
+			cStars[k].setLayoutY(y);
+			cStars[k].toBack();
+		}
+        
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(50), 
                 new EventHandler<ActionEvent>() {
 
@@ -318,7 +357,8 @@ public class ChartFormController2 {
         				}	
         			}
         			
-        			// calculate the positions of the background stars
+        			// calculate the positions and sizes of the background stars
+        			/*
         			for(int k=0; k<raStars.size(); k++) {
         				if(coordsBox.getValue()=="Equatorial") {
         				x = x(raStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
@@ -327,18 +367,44 @@ public class ChartFormController2 {
         					x = x(lonStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
                 			y = y(latStars.get(k))*canvas.getHeight()/chartHeight;
         					
-        				} else {
-        					x = x(galLonStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
-                			y = y(galLatStars.get(k))*canvas.getHeight()/chartHeight;
-        					
+        				} 
+        				
+           				// if the dimmest star has magnitude 6.0:
+        				 
+        				if(magStars.get(k)<=0.0) {
+        					mStar = 2.0;
+        				} else  {
+        				mStar = (6-magStars.get(k))/3;
+        				} 
+        				*/
+        			
+        			//	
+        			
+        			// if the dimensions of the animation window have changed, update the star sizes and positions
+        			
+        			if (chartWidth1 == canvas.getWidth() & chartHeight1 == canvas.getHeight()) {
+        				
+        			} else {
+        			
+        				for(int k=0; k<raStars.size(); k++) {
+        					x = cStars[k].getLayoutX();
+        					y = cStars[k].getLayoutY(); 
+        					z = cStars[k].getRadius(); 
+            				cStars[k].setRadius(rStar(z,canvas.getWidth(),canvas.getHeight()));
+            				cStars[k].setLayoutX(x*canvas.getWidth()/chartWidth1);
+            				cStars[k].setLayoutY(y*canvas.getHeight()/chartHeight1);
+            				cStars[k].toBack();
+            			            			
         				}
-        				
-            			cStars[k].setRadius(r(mStar,canvas.getWidth(),canvas.getHeight()));
-            			cStars[k].setLayoutX(x);
-            			cStars[k].setLayoutY(y);
-            			cStars[k].toBack();
-        				
+        			
+        			chartWidth1 = canvas.getWidth();
+        			chartHeight1 = canvas.getHeight();
+        			
         			}
+        			 
+        			 
+        			 
+        			//
         			
         			//calculate the sun's chart coordinates and radius
         			Sun sun = new Sun(d(calendar));
@@ -466,10 +532,17 @@ public class ChartFormController2 {
     	return y;
     }
     
-    private double r(int m, double w, double h){
+    private double r(double m, double w, double h){
+    //private double r(int m, double w, double h){
     	double r = m*Math.sqrt((Math.pow(w,2)+Math.pow(h,2))/(Math.pow(chartWidth,2)+Math.pow(chartHeight,2)));
     	return r;
     }
+    
+    private double rStar(double m, double w, double h){
+        //private double r(int m, double w, double h){
+        	double r = m*Math.sqrt((Math.pow(w,2)+Math.pow(h,2))/(Math.pow(chartWidth1,2)+Math.pow(chartHeight1,2)));
+        	return r;
+        }
     
     private double d(Calendar c){
     	

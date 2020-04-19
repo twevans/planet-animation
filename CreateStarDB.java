@@ -11,7 +11,7 @@ public class CreateStarDB
    
     	String dbName="jdbcAstronomyDB";
     	String connectionURL = "jdbc:derby:" + dbName + ";create=true";
-    	Connection con = DriverManager.getConnection(connectionURL);	
+    	Connection con = DriverManager.getConnection(connectionURL);	// This line seems to create a database called dbName
     	Statement stmt = con.createStatement();
     		
     	try {
