@@ -19,8 +19,10 @@ public class CreateStarDB2
    {
    
     	String connectionURL = "jdbc:derby:" + dbName + ";create=true";
-    	//String csvFilePath = "hygdata_v3_zodiac_5.csv";
+    	
+    	//String csvFilePath = "hygdata_v3_6.csv";
     	String csvFilePath = "hygdata_v3_6.csv";
+    	
     	int batchSize = 20;
     	
     	Connection con = DriverManager.getConnection(connectionURL);

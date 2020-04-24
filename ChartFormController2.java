@@ -42,8 +42,7 @@ import javafx.util.Duration;
 
 public class ChartFormController2 {
 	
-	//private int chartWidth = 1080; 
-    //private int chartHeight = 500;
+	
 	private int chartWidth = 1080; 
     private int chartHeight = 500;
     private double chartWidth1 = 1080; 
@@ -309,14 +308,7 @@ public class ChartFormController2 {
 			
 			// if the dimmest star has magnitude 6.0:
 			
-			/*
-			if(magStars.get(k)<=0.0) {
-				mStar = 2.0;
-			} else  {
-			mStar = (6-magStars.get(k))/3;
-			} 
-			*/
-			
+						
 			mStar = (6-magStars.get(k))/3;
 			
 			
@@ -357,28 +349,7 @@ public class ChartFormController2 {
         				}	
         			}
         			
-        			// calculate the positions and sizes of the background stars
-        			/*
-        			for(int k=0; k<raStars.size(); k++) {
-        				if(coordsBox.getValue()=="Equatorial") {
-        				x = x(raStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
-            			y = y(decStars.get(k))*canvas.getHeight()/chartHeight;
-        				} else if (coordsBox.getValue()=="Ecliptic") {
-        					x = x(lonStars.get(k)*hourDeg)*canvas.getWidth()/chartWidth;
-                			y = y(latStars.get(k))*canvas.getHeight()/chartHeight;
-        					
-        				} 
-        				
-           				// if the dimmest star has magnitude 6.0:
-        				 
-        				if(magStars.get(k)<=0.0) {
-        					mStar = 2.0;
-        				} else  {
-        				mStar = (6-magStars.get(k))/3;
-        				} 
-        				*/
         			
-        			//	
         			
         			// if the dimensions of the animation window have changed, update the star sizes and positions
         			
@@ -437,8 +408,7 @@ public class ChartFormController2 {
         					x = x(moon.getLon())*canvas.getWidth()/chartWidth;
         					y = y(moon.getLat())*canvas.getHeight()/chartHeight;
         					
-        					//System.out.println(moon.getLon());
-        					//System.out.println(moon.getLat());
+        					
         					
         				}
         				
@@ -462,8 +432,7 @@ public class ChartFormController2 {
         						x = x(p.getLon())*canvas.getWidth()/chartWidth;
             					y = y(p.getLat())*canvas.getHeight()/chartHeight;	
             					
-            					//System.out.println("lon = " + p.getLon());
-            					//System.out.println("lat = " + p.getLat());
+            					
         						
         					}
         					
@@ -533,13 +502,13 @@ public class ChartFormController2 {
     }
     
     private double r(double m, double w, double h){
-    //private double r(int m, double w, double h){
+    
     	double r = m*Math.sqrt((Math.pow(w,2)+Math.pow(h,2))/(Math.pow(chartWidth,2)+Math.pow(chartHeight,2)));
     	return r;
     }
     
     private double rStar(double m, double w, double h){
-        //private double r(int m, double w, double h){
+        
         	double r = m*Math.sqrt((Math.pow(w,2)+Math.pow(h,2))/(Math.pow(chartWidth1,2)+Math.pow(chartHeight1,2)));
         	return r;
         }

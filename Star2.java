@@ -68,17 +68,34 @@ public class Star2 {
 			double latDegrees = latRadians*Planet.radeg;
 	    
 			//compute ecliptic longitude
+			
+			
+			
+			
+			// this works for the plough
 			double cosLon = Math.cos(raRadians)*Math.cos(dnRadians)/Math.cos(latRadians);
 			double lonRadians = Math.acos(cosLon);
 			double lonHours = lonRadians*radhour;
-	    
 			
-	    
-			if(ra > 12) {
-				lonHours = 24 - lonHours;
-			}
-	    
+			// this works for vega:
+			double tanLon2 = (Math.sin(raRadians)*Math.cos(obleclrad) + Math.tan(dnRadians)*Math.sin(obleclrad))/Math.cos(raRadians);
+			double lonRadians2 = Math.atan(tanLon2);
+			double lonHours2 = lonRadians2*radhour;
 			
+			
+	        if(Math.abs((lonHours + lonHours2) - 12) < 0.00001) {
+	     	    
+	        	lonHours = 12+lonHours2;
+	        	
+	        } else if(Math.abs(lonHours + lonHours2) < 0.00001) {
+		        
+	        	lonHours = 24-lonHours;
+		    }
+	        
+	        if(lonHours>23.9) {
+	        	System.out.println(lonHours);
+	        	System.out.println(latDegrees);
+	        }
 	    
 			lonList.add(lonHours);
 			latList.add(latDegrees);
@@ -87,87 +104,22 @@ public class Star2 {
 	       
 		}
 
+		//System.out.println(raList);
+		//System.out.println(lonList);
+		
 		stmt.close();
     	
     	
 		
     } 
      
-     public static void main(String[] args) throws SQLException, FileNotFoundException {
-    	 Star2 teststar2 = new Star2();
-     }
+     //public static void main(String[] args) throws SQLException, FileNotFoundException {
+    	// Star2 teststar2 = new Star2();
+     //}
     
-	/* public static void main(String[] args) throws SQLException, FileNotFoundException
-
-	   {
-		
-		CreateStarDB2.main(null);
-		
-		String connectionURL = "jdbc:derby:" + CreateStarDB2.dbName;
-    	
-    	
-    	Connection con = DriverManager.getConnection(connectionURL);
-    	Statement stmt = con.createStatement();
-		
-		//String dbName = CreateStarDB2.dbName;
-		
-		
-		
-		String query =
-
-				"select RA, DN, MAG " +
-        
-				"from " + CreateStarDB2.dbName + ".STARS";
-		
-		ResultSet rs = stmt.executeQuery(query);
-		
-		while (rs.next()) {
-
-			double ra = rs.getDouble("RA");
-			double dn = rs.getDouble("DN");
-			double raRadians = 15*ra/Planet.radeg;
-			double dnRadians = dn/Planet.radeg;
-			double radhour = 12/Math.PI;
-			double obleclrad = Planet.oblecl/Planet.radeg;
-			double raGalRad = 3.36603;
-			double dnGalRad = 0.47348;
-			double lNCP = 2.14557;
-	    
-			raList.add(ra);
-			decList.add(dn);
-	    
-			//compute ecliptic latitude
-			double sinLat = Math.sin(dnRadians)*Math.cos(obleclrad) - Math.cos(dnRadians)*Math.sin(obleclrad)*Math.sin(raRadians);
-			double latRadians = Math.asin(sinLat);
-			double latDegrees = latRadians*Planet.radeg;
-	    
-			//compute ecliptic longitude
-			double cosLon = Math.cos(raRadians)*Math.cos(dnRadians)/Math.cos(latRadians);
-			double lonRadians = Math.acos(cosLon);
-			double lonHours = lonRadians*radhour;
-	    
-			
-	    
-			if(ra > 12) {
-				lonHours = 24 - lonHours;
-			}
-	    
-			
-	    
-			lonList.add(lonHours);
-			latList.add(latDegrees);
-	    
-			
-	       
-		}
-
-		stmt.close();
-		
 	
-		
-	   } */
      
-     public List<Double> getRA(){
+    public List<Double> getRA(){
  		return raList;
  	}
  	
