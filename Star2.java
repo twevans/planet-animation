@@ -57,6 +57,7 @@ public class Star2 {
 			
 			//System.out.println(ra);
 			//System.out.println(dn);
+			//System.out.println(mag);
 	    
 			raList.add(ra);
 			decList.add(dn);
@@ -92,13 +93,15 @@ public class Star2 {
 	        	lonHours = 24-lonHours;
 		    }
 	        
-	        if(lonHours>23.9) {
-	        	System.out.println(lonHours);
-	        	System.out.println(latDegrees);
-	        }
+	        
+	        	//System.out.println(lonHours);
+	        	//System.out.println(latDegrees);
+	        	//System.out.println("");
+	        
 	    
 			lonList.add(lonHours);
 			latList.add(latDegrees);
+			
 	    
 			
 	       

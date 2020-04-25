@@ -20,8 +20,8 @@ public class CreateStarDB2
    
     	String connectionURL = "jdbc:derby:" + dbName + ";create=true";
     	
-    	//String csvFilePath = "hygdata_v3_6.csv";
     	String csvFilePath = "hygdata_v3_6.csv";
+    	
     	
     	int batchSize = 20;
     	
@@ -75,7 +75,7 @@ public class CreateStarDB2
                 double sqlDn = Double.valueOf(dn);
                 double sqlMag = Double.valueOf(mag);
                 
-                System.out.println(cns);
+                //System.out.println(cns);
                                
                 statement.setInt(1, sqlId);
                 statement.setDouble(2, sqlRa);

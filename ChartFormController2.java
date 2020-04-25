@@ -249,11 +249,13 @@ public class ChartFormController2 {
         	}
 		}
         
-        for(int k=0; k<cEcliptic.length; k++) {
-			cEcliptic[k] = new Circle(mEcliptic, Color.YELLOW);
-			canvas.getChildren().add(cEcliptic[k]);
+        if(coordsBox.getValue()=="Equatorial") {
+        	for(int k=0; k<cEcliptic.length; k++) {
+        		cEcliptic[k] = new Circle(mEcliptic, Color.YELLOW);
+        		canvas.getChildren().add(cEcliptic[k]);
 			
-		}
+        	}
+        }
         
         for(int k=0; k<raStars.size(); k++) {
 			
@@ -306,11 +308,15 @@ public class ChartFormController2 {
 				
 			} 
 			
+			//System.out.println(x);
+			//System.out.println(y);
+			
 			// if the dimmest star has magnitude 6.0:
+			//mStar = (6-magStars.get(k))/3;
+			mStar = (6.01-magStars.get(k))/3;
 			
-						
-			mStar = (6-magStars.get(k))/3;
-			
+			//System.out.println(mStar);
+			//System.out.println(r(mStar,canvas.getWidth(),canvas.getHeight()));
 			
 			cStars[k].setRadius(r(mStar,canvas.getWidth(),canvas.getHeight()));
 			cStars[k].setLayoutX(x);
@@ -333,13 +339,13 @@ public class ChartFormController2 {
         			button1.setLayoutX(canvas.getWidth()/2);
         			button1.setLayoutY(0.9*canvas.getHeight());
             	
-        			//draw the equator
+        			//draw the horizontal equator / ecliptic line
         			equator.setEndX(canvas.getWidth());
         			equator.setStartY(canvas.getHeight()/2);
         			equator.setEndY(canvas.getHeight()/2);
         			equator.toBack();
         		
-        			//draw the ecliptic
+        			//draw the ecliptic curve if the equatorial coordinates have been selected
         			if(coordsBox.getValue()=="Equatorial") {
         				for(int k=0; k<cEcliptic.length; k++) {
         					cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
