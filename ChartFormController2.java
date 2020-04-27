@@ -42,53 +42,48 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
-public class ChartFormController2 {
+public class ChartFormController2 extends Calculations {
 	
-	private int chartWidth = 1080; 
-    private int chartHeight = 500;
-    private int rAMult = 45;
-    private int decMult = 3;
-    private int mSun = 8;
-    private int mMoon = 8;
-    private int mPlanet = 2;
-    private int mEcliptic = 1;
-    private int hourDeg = 15;
-    private int fontSize = 15;
-    private int pFontSize = 12;
-    
-    private double chartWidth1 = 1080; 
-    private double chartHeight1 = 500;
-    private double mStar = 0.5;
-    private double x;
+	private double x;
     private double y;
     private double z;
+    private int hInt;
+    private int mInt;
+    private Star2 stars;
+    private Text tDate;
+    private DateFormat dateFormat;
+    private String strDate;
+    private String hString;
+    private String mString;
+    private List<Double> raStars;
+    private List<Double> decStars;	
+    private List<Double> lonStars;
+    private List<Double> latStars;	
+    private List<Double> magStars;
+    private Stage stage;
+    private Date date;
+    private Calendar calendar;
+    private Scene scene;
+    private Circle[] cStars;
     
     private Circle[] ballP = new Circle[7];
     private Circle[] cEcliptic = new Circle[300];
-    private Circle[] cStars;
-    
+    private Circle ball = new Circle(mSun, Color.YELLOW);
+	private Circle ballM = new Circle(mMoon, Color.WHITE);
+	private Line equator = new Line(0, chartHeight/2, chartWidth, chartHeight/2);
     private Text[] tPlanets = new Text[7];
-    
-    private Date date;
-    
-    private Calendar calendar;
-    
-    private Scene scene;
-    
-    private boolean runIndicator = false;
+    private Button button1 = new Button("Exit");
+	private Pane canvas = new Pane();
+	private boolean runIndicator = false;
 	
+    
 	ObservableList<String> speedList = FXCollections.observableArrayList("Static Picture","Slow Animation","Fast Animation");
-	
 	ObservableList<String> hourList = FXCollections.observableArrayList("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23");
-
 	ObservableList<String> minuteList = FXCollections.observableArrayList("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19",
 			"20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40",
 			"40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"
 			);
-
 	ObservableList<String> trailsList = FXCollections.observableArrayList("N","Y");
-	
-	//ObservableList<String> coordsList = FXCollections.observableArrayList("Equatorial","Ecliptic","Galactic");
 	ObservableList<String> coordsList = FXCollections.observableArrayList("Equatorial","Ecliptic");
 	
     @FXML
@@ -174,36 +169,32 @@ public class ChartFormController2 {
             return;
         }
         
-        Line equator = new Line(0, chartHeight/2, chartWidth, chartHeight/2);
-    	Circle ball = new Circle(mSun, Color.YELLOW);
-    	Circle ballM = new Circle(mMoon, Color.WHITE);
-    	Button button1 = new Button("Exit");
-    	Pane canvas = new Pane();
-        Star2 stars = new Star2();
+        stars = new Star2();
         
-		List<Double> raStars = stars.getRA();
-		List<Double> decStars = stars.getDec();	
-		List<Double> lonStars = stars.getLon();
-		List<Double> latStars = stars.getLat();	
-		List<Double> magStars = stars.getMag();
+        raStars = stars.getRA();
+		decStars = stars.getDec();	
+		lonStars = stars.getLon();
+		latStars = stars.getLat();	
+		magStars = stars.getMag();
 		
 		cStars = new Circle[raStars.size()];
+		
     	calendar = new GregorianCalendar();
     	date = java.sql.Date.valueOf(startDate.getValue());
         calendar.setTime(date);
         
-        String hString = (String) hourBox.getValue();
-        String mString = (String) minuteBox.getValue();
+        hString = (String) hourBox.getValue();
+        mString = (String) minuteBox.getValue();
         
-        int hInt = Integer.parseInt(hString);
-        int mInt = Integer.parseInt(mString);
+        hInt = Integer.parseInt(hString);
+        mInt = Integer.parseInt(mString);
         
         calendar.add(Calendar.HOUR_OF_DAY, hInt);
         calendar.add(Calendar.MINUTE, mInt);
         
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String strDate = dateFormat.format(date);
-        Text tDate = new Text (25,50,strDate);
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        strDate = dateFormat.format(date);
+        tDate = new Text (25,50,strDate);
         
         Boolean[] planetIndicators = {mercuryIndicator.isSelected(), venusIndicator.isSelected(), 
         		marsIndicator.isSelected(), jupiterIndicator.isSelected(), saturnIndicator.isSelected(), 
@@ -217,6 +208,7 @@ public class ChartFormController2 {
         
         canvas.setStyle("-fx-background-color: cornflowerblue;");
         scene = new Scene(canvas, chartWidth, chartHeight, Color.CORNFLOWERBLUE);
+        
     	canvas.getChildren().add(equator);
         canvas.getChildren().add(tDate);
         canvas.getChildren().add(button1);
@@ -230,7 +222,6 @@ public class ChartFormController2 {
         }
         
         for(int k=0; k<ballP.length; k++) {
-        	
         	if(planetIndicators[k]==true) {
         		ballP[k] = new Circle(mPlanet, Color.RED);
         		canvas.getChildren().add(ballP[k]);
@@ -250,13 +241,11 @@ public class ChartFormController2 {
 			canvas.getChildren().add(cStars[k]);
         }
         
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.setTitle("Star Chart Animation");
+        stage.setScene(scene);
         
         runIndicator = true;
-        
-        stage.setScene(scene);
             
         //button1 returns the user to the interface 
         
@@ -311,7 +300,6 @@ public class ChartFormController2 {
             public void handle(ActionEvent t) {
         		
         		if (runIndicator) {
-        			
         			button1.setLayoutX(canvas.getWidth()/2);
         			button1.setLayoutY(0.9*canvas.getHeight());
             	
@@ -335,20 +323,19 @@ public class ChartFormController2 {
         			if (chartWidth1 == canvas.getWidth() & chartHeight1 == canvas.getHeight()) {
         				
         			} else {
-        			
         				for(int k=0; k<raStars.size(); k++) {
         					x = cStars[k].getLayoutX();
         					y = cStars[k].getLayoutY(); 
         					z = cStars[k].getRadius(); 
+        					
         					cStars[k].setRadius(rStar(z,canvas.getWidth(),canvas.getHeight()));
             				cStars[k].setLayoutX(x*canvas.getWidth()/chartWidth1);
             				cStars[k].setLayoutY(y*canvas.getHeight()/chartHeight1);
             				cStars[k].toBack();
         				}
         			
-        			chartWidth1 = canvas.getWidth();
-        			chartHeight1 = canvas.getHeight();
-        			
+        				chartWidth1 = canvas.getWidth();
+        				chartHeight1 = canvas.getHeight();
         			}
         			 
         			//calculate the sun's chart coordinates and radius
@@ -406,15 +393,19 @@ public class ChartFormController2 {
         						ballP[j].setRadius(r(mPlanet,canvas.getWidth(),canvas.getHeight()));
         						ballP[j].setLayoutX(x);
         						ballP[j].setLayoutY(y);
+        						
         						tPlanets[j].setX(x+2*mPlanet);
         						tPlanets[j].setY(y+8*mPlanet);
         						tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
         					} else {
         						Circle ballP0 = new Circle(mPlanet/2, Color.RED);
+        						
         						canvas.getChildren().add(ballP0);
+        						
         						ballP0.setRadius(r(mPlanet/2,canvas.getWidth(),canvas.getHeight()));
         						ballP0.setLayoutX(x);
         						ballP0.setLayoutY(y);
+        						
         						tPlanets[j].setX(x+2*mPlanet);
         						tPlanets[j].setY(y+8*mPlanet);
         						tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
@@ -442,42 +433,10 @@ public class ChartFormController2 {
         		}
             }
         }));
+        
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        
     }
     
-    private double x(double rA){
-    	double x = (chartWidth-rAMult*rA/hourDeg)/chartWidth;
-    	return x;
-    }
-    
-    private double y(double dec){
-    	double y = ((chartHeight/2)-decMult*dec)/chartHeight;
-    	return y;
-    }
-    
-    private double r(double m, double w, double h){
-    	double r = m*Math.sqrt((Math.pow(w,2)+Math.pow(h,2))/(Math.pow(chartWidth,2)+Math.pow(chartHeight,2)));
-    	return r;
-    }
-    
-    private double rStar(double m, double w, double h){
-        	double r = m*Math.sqrt((Math.pow(w,2)+Math.pow(h,2))/(Math.pow(chartWidth1,2)+Math.pow(chartHeight1,2)));
-        	return r;
-    }
-    
-    private double d(Calendar c){
-    	
-    	int year   = c.get(Calendar.YEAR);
-        int month  = c.get(Calendar.MONTH) + 1;
-        int day    = c.get(Calendar.DAY_OF_MONTH);
-        int hour   = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-        int dInt   = 367*year - 7*(year+(month+9)/12)/4 + 275*month/9 + day - 730530;
-        double d   = dInt + (hour + minute/60.0)/24.0;
-        
-        return d;
-    }
     
 }
