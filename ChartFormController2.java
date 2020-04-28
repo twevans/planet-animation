@@ -252,6 +252,8 @@ public class ChartFormController2 extends Calculations {
         button1.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	runIndicator = false;
+            	chartWidth1 = 1080; 
+            	chartHeight1 = 500;
                 Parent root;
                 
 				try {
