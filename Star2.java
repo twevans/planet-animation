@@ -9,6 +9,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 
+/**
+ * 
+ * @author twevans
+ *
+ */
 public class Star2 {
 	
 	List<Double> raList  = new ArrayList<Double>();	
@@ -17,6 +22,11 @@ public class Star2 {
     List<Double> latList = new ArrayList<Double>();
     List<Double> magList = new ArrayList<Double>();
 	
+     /**
+      * Constructor for the Star2 class
+      * @throws SQLException
+      * @throws FileNotFoundException
+      */
      public Star2() throws SQLException, FileNotFoundException {
     	
     	//try { 
@@ -121,23 +131,42 @@ public class Star2 {
      //}
     
 	
-     
+    /**
+     * Returns the right ascensions of the stars in the database
+     * @return a List<Double> whose entries are the right ascension values of the stars in the database
+     */
     public List<Double> getRA(){
  		return raList;
  	}
  	
+    /**
+     * Returns the declinations of the stars in the database
+     * @return a List<Double> whose entries are the declination values of the stars in the database
+     */
  	public List<Double> getDec(){
  		return decList;
  	}
  	
+ 	/**
+ 	 * Returns the ecliptic longitudes of the stars in the database
+ 	 * @return a List<Double> whose entries are the ecliptic longitudes of the stars in the database
+ 	 */
  	public List<Double> getLon(){
  		return lonList;
  	}
  	
+ 	/**
+ 	 * Returns the ecliptic latitudes of the stars in the database
+ 	 * @return a List<Double> whose entries are the ecliptic latitudes of the stars in the database
+ 	 */
  	public List<Double> getLat(){
  		return latList;
  	}
  	
+ 	/**
+ 	 * Returns the apparent magnitudes of the stars in the database
+ 	 * @return a List<Double> whose entries are the apparent magnitudes of the stars in the database
+ 	 */
  	public List<Double> getMag(){
  		return magList;
  	}
