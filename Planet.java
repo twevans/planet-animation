@@ -1,5 +1,10 @@
 package animation;
 
+/**
+ * 
+ * @author twevans
+ *
+ */
 public class Planet{
 
 	String name;
@@ -44,6 +49,16 @@ public class Planet{
 	private double rA;
 	private double dec;
 	
+	/**
+	 * This constructs a planet object
+	 * @param d day number
+	 * @param str the name of the planet
+	 * @param p the constant components of the orbital elements of the planet
+	 * @param pDot the variable components of the orbital elements of the planet
+	 * @param d1 the rectangular x coordinate of the sun
+	 * @param d2 the rectangular y coordinate of the sun
+	 * @param d3 the rectangular z coordinate of the sun
+	 */
 	public Planet (double d, String str, double[] p, double[] pDot, double d1, double d2, double d3) {
 		name = str;
 		sx = d1;
@@ -76,10 +91,20 @@ public class Planet{
 		
 	}
 
+	/**
+	 * This returns an angle between 0 and 360 degrees
+	 * @param x any angle
+	 * @return an angle between 0 and 360 degrees
+	 */
 	public double rev(double x) {
 		return  x - Math.floor(x/360.0)*360.0;
 	}
 	
+	/**
+	 * This returns the sum of the elements of a double[] array
+	 * @param array a double[] array
+	 * @return the sum of the elements of the array
+	 */
 	public double sumArray(double[] array) {
 		sum = 0.0;
 		
@@ -90,28 +115,53 @@ public class Planet{
 		return sum;
 	}
 	
+	/**
+	 * This sets the mean anomalies of Jupiter, Saturn and Uranus
+	 * @param d1 the mean anomaly of Jupiter
+	 * @param d2 the mean anomaly of Saturn
+	 * @param d3 the mean anomaly of Uranus
+	 */
 	public void setM(double d1, double d2, double d3) {
 		Mj = d1;
 		Ms = d2;
 		Mu = d3;
 	}
 	
+	/**
+	 * This returns the mean anomaly of this planet
+	 * @return mean anomaly
+	 */
 	public double getM(){
 		return M;
 	}
 	
+	/**
+	 * This returns the right ascension of this planet
+	 * @return right ascension of this planet
+	 */
 	public double getRA(){
 		return rA;
 	}
 	
+	/**
+	 * This returns the declination of this planet
+	 * @return declination of this planet
+	 */
 	public double getDec(){
 		return dec;
 	}
 	
+	/**
+	 * This returns the name of this planet
+	 * @return name of this planet
+	 */
 	public String getName(){
 		return name;
 	}
 	
+	/**
+	 * This adjusts Jupiter's heliocentric longitude to allow for perturbations caused by Saturn
+	 */
 	public void adjustJLong() {
 		jLongTerms[0] = -0.332*Math.sin((2*Mj-5*Ms-67.6)/radeg);
 		jLongTerms[1] = -0.056*Math.sin((2*Mj-2*Ms+21.0)/radeg);
@@ -123,6 +173,9 @@ public class Planet{
 		lon = lon + sumArray(jLongTerms);
 	}
 	
+	/**
+	 * This adjusts Saturn's heliocentric longitude to allow for perturbations caused by Jupiter
+	 */
     public void adjustSLong() {
     	sLongTerms[0] =  0.812*Math.sin((2*Mj-5*Ms-67.6)/radeg);
     	sLongTerms[1] = -0.229*Math.cos((2*Mj-4*Ms-2.0)/radeg);
@@ -132,12 +185,18 @@ public class Planet{
     	lon = lon + sumArray(sLongTerms);
     }
 
+    /**
+     *  This adjusts Saturn's heliocentric latitude to allow for perturbations caused by Jupiter
+     */
 	public void adjustSLat() {
 		sLatTerms[0] = -0.020*Math.cos((2*Mj-4*Ms-2.0)/radeg);
 		sLatTerms[1] =  0.018*Math.sin((2*Mj-6*Ms-49.0)/radeg);
 		lat = lat + sumArray(sLatTerms);
 	} 
 
+	/**
+	 * This adjusts Uranus's heliocentric longitude to allow for perturbations caused by Jupiter and Saturn
+	 */
 	public void adjustULong() {
 		uLongTerms[0] =  0.040*Math.sin((Ms-2*Mu+6.0)/radeg);
 		uLongTerms[1] =  0.035*Math.sin((Ms-3*Mu+33.0)/radeg);
@@ -145,6 +204,9 @@ public class Planet{
 		lon = lon + sumArray(uLongTerms);
 	}
 	
+	/**
+	 * This calculates the rectangular geocentric coordinates of this planet
+	 */
 	public void convertToGeocentric() {
 	
 		double xgeoc = sx + xeclip;
@@ -160,6 +222,14 @@ public class Planet{
 		double rgeoc = Math.sqrt(xegeoc*xegeoc+yegeoc*yegeoc+zegeoc*zegeoc);
 	}
 	
+	/**
+	 * This returns a Planet[] array
+	 * @param d the day number
+	 * @param sx the rectangular x coordinate of the sun
+	 * @param sy the rectangular y coordinate of the sun
+	 * @param sz the rectangular z coordinate of the sun
+	 * @return a Planet[] array
+	 */
 	public static Planet[] calcPlanets(double d, double sx, double sy, double sz){
     	
     	Planet mercury   = new Planet(d, "Mercury", Planet.mercury, Planet.mercuryDot, sx, sy, sz);
@@ -184,10 +254,18 @@ public class Planet{
 		return pp;
     }
 	
+	/**
+	 * This returns the longitude of this planet
+	 * @return
+	 */
 	public double getLon(){
 		return lon;
 	}
 	
+	/**
+	 * This returns the latitude of this planet
+	 * @return
+	 */
 	public double getLat(){
 		if(lat > 180) {
 			return lat - 360;
