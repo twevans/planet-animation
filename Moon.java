@@ -1,11 +1,22 @@
 package animation;
 
+/**
+ * 
+ * @author twevans
+ *
+ */
 public class Moon {
 	private double rA;
 	private double dec;
 	private double lon;
 	private double lat;
 	
+	/**
+	 * This constructs a moon object
+	 * @param d day number
+	 * @param lS longitude of the sun
+	 * @param mS mean anomaly of the sun
+	 */
 	public Moon (double d, double lS, double mS) {
 		double n = rev(125.1228 - 0.0529538083 * d); 	// longitude of the ascending node
 		double i = 5.1454;								// inclination
@@ -93,22 +104,43 @@ public class Moon {
     	dec  = dec  - mPar*rho*Math.sin(gClat/radeg)*Math.sin((g - dec)/radeg)/Math.sin(g/radeg); 
 	}
 
+	/**
+	 * This returns an angle between 0 and 360 degrees
+	 * @param x any angle
+	 * @return an angle between 0 and 360 degrees
+	 */
 	public double rev(double x) {
 		return  x - Math.floor(x/360.0)*360.0;
     }
 	
+	/**
+	 * This returns the right ascension
+	 * @return right ascension
+	 */
 	public double getRA(){
 		return rA;
 	}
 	
+	/**
+	 * This returns the declination
+	 * @return declination
+	 */
 	public double getDec(){
 		return dec;
 	}
 	
+	/**
+	 * This returns the longitude
+	 * @return longitude
+	 */
 	public double getLon(){
 		return lon;
 	}
 	
+	/**
+	 * This returns the latitude
+	 * @return latitude
+	 */
 	public double getLat(){
 		if(lat > -180) {
 			return lat;

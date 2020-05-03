@@ -1,8 +1,8 @@
 package animation;
 
 /**
- * This class implements sun objects for a given day number
- * @author tomevans
+ * 
+ * @author twevans
  *
  */
 public class Sun {
