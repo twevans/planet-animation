@@ -11,8 +11,8 @@ public class Calculations extends ParameterValues {
 
 	/**
 	 * Returns the x coordinate of a circle in the chart
-	 * @param rA right ascension (or the ecliptic longitude) of the object
-	 * @return the x coordinate of the object in the chart
+	 * @param rA right ascension (or ecliptic longitude) of the object
+	 * @return the x coordinate of the circle in the chart
 	 */
 	public double x(double rA){
     	double x = (chartWidth-rAMult*rA/hourDeg)/chartWidth;
@@ -21,8 +21,8 @@ public class Calculations extends ParameterValues {
     
 	/**
 	 * Returns the y coordinate of a circle in the chart 
-	 * @param dec declination (or ecliptic latitude) of the object
-	 * @return the y coordinate of the object in the chart
+	 * @param dec declination (ecliptic latitude) of the object
+	 * @return the y coordinate of the circle in the chart
 	 */
     public double y(double dec){
     	double y = ((chartHeight/2)-decMult*dec)/chartHeight;
@@ -34,7 +34,7 @@ public class Calculations extends ParameterValues {
      * @param m apparent magnitude of the object
      * @param w the width of the chart
      * @param h the height of the chart
-     * @return
+     * @return the radius of the circle in the chart
      */
     public double r(double m, double w, double h){
     	double r = m*Math.sqrt((Math.pow(w,2)+Math.pow(h,2))/(Math.pow(chartWidth,2)+Math.pow(chartHeight,2)));
@@ -46,7 +46,7 @@ public class Calculations extends ParameterValues {
      * @param m the apparent magnitude of the star
      * @param w the width of the chart
      * @param h the height of the chart
-     * @return
+     * @return the radius of the circle in the chart
      */
     public double rStar(double m, double w, double h){
         	double r = m*Math.sqrt((Math.pow(w,2)+Math.pow(h,2))/(Math.pow(chartWidth1,2)+Math.pow(chartHeight1,2)));
