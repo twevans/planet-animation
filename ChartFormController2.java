@@ -44,15 +44,13 @@ public class ChartFormController2 extends Calculations {
     }
 
     /**
-     * This opens the star chart window and displays the animation.
+     * This opens the star chart window and runs the animation.
      * @param event button click
      * @throws SQLException
      * @throws FileNotFoundException
      */
     @FXML
     protected void handleRunButtonAction(ActionEvent event) throws SQLException, FileNotFoundException {
-    	
-    	
     	
     	Window owner = runButton.getScene().getWindow();
         
@@ -90,8 +88,8 @@ public class ChartFormController2 extends Calculations {
         button1.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	runIndicator = false;
-            	chartWidth1 = 1080; 
-            	chartHeight1 = 500;
+            	chartWidth1 = chartWidth; 
+            	chartHeight1 = chartHeight;
                 Parent root;
                 
 				try {
@@ -116,8 +114,6 @@ public class ChartFormController2 extends Calculations {
         
         initializeStars();
         
-        
-        
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(50), 
                 new EventHandler<ActionEvent>() {
 
@@ -131,8 +127,6 @@ public class ChartFormController2 extends Calculations {
         			
         			drawExitButton();
         			
-        			
-            	
         			drawChartLines();
         			        			
         			// if the dimensions of the animation window have changed, update the star sizes and positions

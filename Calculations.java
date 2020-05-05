@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
  * @author twevans
  *
  */
-public class Calculations extends ParameterValues {
+public class Calculations extends Parameters {
 
 	/**
 	 * Returns the x coordinate of a circle in the chart
