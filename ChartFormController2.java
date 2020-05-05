@@ -241,24 +241,13 @@ public class ChartFormController2 extends Calculations {
             public void handle(ActionEvent t) {
         		
         		if (runIndicator) {
-        			button1.setLayoutX(canvas.getWidth()/2);
-        			button1.setLayoutY(0.9*canvas.getHeight());
-            	
-        			//draw the horizontal equator / ecliptic line
-        			equator.setEndX(canvas.getWidth());
-        			equator.setStartY(canvas.getHeight()/2);
-        			equator.setEndY(canvas.getHeight()/2);
-        			equator.toBack();
-        		
-        			//draw the ecliptic curve (if equatorial coordinates have been selected)
-        			if(coordsBox.getValue()=="Equatorial") {
-        				for(int k=0; k<cEcliptic.length; k++) {
-        					cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
-        					cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
-        					cEcliptic[k].toBack();
-        				}	
-        			}
         			
+        			drawExitButton();
+        			
+        			
+            	
+        			drawChartLines();
+        			        			
         			// if the dimensions of the animation window have changed, update the star sizes and positions
         			
         			if (chartWidth1 == canvas.getWidth() & chartHeight1 == canvas.getHeight()) {
@@ -267,64 +256,47 @@ public class ChartFormController2 extends Calculations {
         				
         				updateStars();
         				
-        				
         			}
         			 
         			//calculate the sun's chart coordinates and radius
         			
-        			
-        			
         			Sun sun = new Sun(d(calendar));
+        			
         			if(sunIndicator.isSelected()) {
         				
         				updateSun(sun);
         				
-        				
         			}
         			
+        			//calculate the moon's chart coordinates and radius
         			
-        			
-            	    //calculate the moon's chart coordinates and radius
         			if(moonIndicator.isSelected()) {
+        				
         				Moon moon = new Moon (d(calendar), sun.getML() , sun.getMA());
         				
         				updateMoon(moon);
         				
-        				
-    					
         			}
             	
         			//calculate the coordinates and radii of the planets
+        			
         			Planet[] planets = Planet.calcPlanets(d(calendar), sun.getX(), sun.getY(), sun.getZ());
+        			
         			int j = 0;
+        			
         			for (Planet p : planets) {
         			
         				if(planetIndicators[j]==true) {
         					
         					updatePlanet(p,j);
         					
-        					
-        					
         				}
         				
         				j++;
         			}
         			
-        			if(speedBox.getValue()=="Slow Animation") {
-        				//move time forward by one hour
-        				calendar.add(Calendar.HOUR_OF_DAY, 1);
-        				String dt = dateFormat.format(calendar.getTime());
-        				tDate.setText("Date:  " + dt);
-        				tDate.setFont(new Font(r(fontSize,canvas.getWidth(),canvas.getHeight())));
-        			} else if (speedBox.getValue()=="Fast Animation") {
-        				//move time forward by one day
-            			calendar.add(Calendar.DAY_OF_MONTH, 1);
-            			String dt = dateFormat.format(calendar.getTime());
-            			tDate.setText(dt);
-        			}
+        			advanceTime();
         			
-        			//move time forward by one minute
-        			//calendar.add(Calendar.MINUTE, 1);
         		}
             }
         }));
@@ -447,6 +419,32 @@ public class ChartFormController2 extends Calculations {
     	
     }
     
+    private void drawExitButton() {
+    	
+    	button1.setLayoutX(canvas.getWidth()/2);
+		button1.setLayoutY(0.9*canvas.getHeight());
+    	
+    }
+    
+    private void drawChartLines() {
+    	
+    	//draw the horizontal equator / ecliptic line
+		equator.setEndX(canvas.getWidth());
+		equator.setStartY(canvas.getHeight()/2);
+		equator.setEndY(canvas.getHeight()/2);
+		equator.toBack();
+	
+		//draw the ecliptic curve (if equatorial coordinates have been selected)
+		if(coordsBox.getValue()=="Equatorial") {
+			for(int k=0; k<cEcliptic.length; k++) {
+				cEcliptic[k].setLayoutX(canvas.getWidth()*k/(cEcliptic.length-1));
+				cEcliptic[k].setLayoutY((canvas.getHeight()/2 + 23.5*decMult*(canvas.getHeight()/chartHeight)*Math.sin((cEcliptic[k].getLayoutX()/canvas.getWidth())*2*Math.PI)));
+				cEcliptic[k].toBack();
+			}	
+		}
+    	
+    }
+    
     /**
      * Updates the sun's position in the chart.
      * @param sun sun object
@@ -530,6 +528,26 @@ public class ChartFormController2 extends Calculations {
 			tPlanets[j].setY(y+8*mPlanet);
 			tPlanets[j].setFont(new Font(r(pFontSize,canvas.getWidth(),canvas.getHeight())));
 		}
+    	
+    }
+    
+    private void advanceTime() {
+    	
+    	if(speedBox.getValue()=="Slow Animation") {
+			//move time forward by one hour
+			calendar.add(Calendar.HOUR_OF_DAY, 1);
+			String dt = dateFormat.format(calendar.getTime());
+			tDate.setText("Date:  " + dt);
+			tDate.setFont(new Font(r(fontSize,canvas.getWidth(),canvas.getHeight())));
+		} else if (speedBox.getValue()=="Fast Animation") {
+			//move time forward by one day
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			String dt = dateFormat.format(calendar.getTime());
+			tDate.setText(dt);
+		}
+		
+		//move time forward by one minute
+		//calendar.add(Calendar.MINUTE, 1);
     	
     }
     
