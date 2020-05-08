@@ -92,7 +92,7 @@ public class Planet{
 	}
 
 	/**
-	 * This returns an angle between 0 and 360 degrees
+	 * Returns an angle between 0 and 360 degrees
 	 * @param x any angle
 	 * @return an angle between 0 and 360 degrees
 	 */
@@ -101,7 +101,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This returns the sum of the elements of a double[] array
+	 * Returns the sum of the elements of a double[] array
 	 * @param array a double[] array
 	 * @return the sum of the elements of the array
 	 */
@@ -116,7 +116,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This sets the mean anomalies of Jupiter, Saturn and Uranus
+	 * Sets the mean anomalies of Jupiter, Saturn and Uranus
 	 * @param d1 the mean anomaly of Jupiter
 	 * @param d2 the mean anomaly of Saturn
 	 * @param d3 the mean anomaly of Uranus
@@ -128,7 +128,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This returns the mean anomaly of this planet
+	 * Returns the mean anomaly of this planet
 	 * @return mean anomaly
 	 */
 	public double getM(){
@@ -136,7 +136,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This returns the right ascension of this planet
+	 * Returns the right ascension of this planet
 	 * @return right ascension of this planet
 	 */
 	public double getRA(){
@@ -144,7 +144,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This returns the declination of this planet
+	 * Returns the declination of this planet
 	 * @return declination of this planet
 	 */
 	public double getDec(){
@@ -152,7 +152,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This returns the name of this planet
+	 * Returns the name of this planet
 	 * @return name of this planet
 	 */
 	public String getName(){
@@ -160,7 +160,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This adjusts Jupiter's heliocentric longitude to allow for perturbations caused by Saturn
+	 * Adjusts Jupiter's heliocentric longitude to allow for perturbations caused by Saturn
 	 */
 	public void adjustJLong() {
 		jLongTerms[0] = -0.332*Math.sin((2*Mj-5*Ms-67.6)/radeg);
@@ -174,7 +174,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This adjusts Saturn's heliocentric longitude to allow for perturbations caused by Jupiter
+	 * Adjusts Saturn's heliocentric longitude to allow for perturbations caused by Jupiter
 	 */
     public void adjustSLong() {
     	sLongTerms[0] =  0.812*Math.sin((2*Mj-5*Ms-67.6)/radeg);
@@ -186,7 +186,7 @@ public class Planet{
     }
 
     /**
-     *  This adjusts Saturn's heliocentric latitude to allow for perturbations caused by Jupiter
+     *  Adjusts Saturn's heliocentric latitude to allow for perturbations caused by Jupiter
      */
 	public void adjustSLat() {
 		sLatTerms[0] = -0.020*Math.cos((2*Mj-4*Ms-2.0)/radeg);
@@ -195,7 +195,7 @@ public class Planet{
 	} 
 
 	/**
-	 * This adjusts Uranus's heliocentric longitude to allow for perturbations caused by Jupiter and Saturn
+	 * Adjusts Uranus's heliocentric longitude to allow for perturbations caused by Jupiter and Saturn
 	 */
 	public void adjustULong() {
 		uLongTerms[0] =  0.040*Math.sin((Ms-2*Mu+6.0)/radeg);
@@ -205,7 +205,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This calculates the rectangular geocentric coordinates of this planet
+	 * Calculates the rectangular geocentric coordinates of this planet
 	 */
 	public void convertToGeocentric() {
 	
@@ -223,7 +223,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This returns a Planet[] array
+	 * Returns a Planet[] array
 	 * @param d the day number
 	 * @param sx the rectangular x coordinate of the sun
 	 * @param sy the rectangular y coordinate of the sun
@@ -255,7 +255,7 @@ public class Planet{
     }
 	
 	/**
-	 * This returns the longitude of this planet
+	 * Returns the longitude of this planet
 	 * @return
 	 */
 	public double getLon(){
@@ -263,7 +263,7 @@ public class Planet{
 	}
 	
 	/**
-	 * This returns the latitude of this planet
+	 * Returns the latitude of this planet
 	 * @return
 	 */
 	public double getLat(){

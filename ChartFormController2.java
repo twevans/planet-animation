@@ -21,8 +21,6 @@ import javafx.util.Duration;
 
 public class ChartFormController2 extends Calculations {
 	
-	
-    
     /**
      * This sets the default options in the UI
      */
@@ -42,13 +40,7 @@ public class ChartFormController2 extends Calculations {
     	coordsBox.setItems(coordsList);
     	
     }
-
-    /**
-     * This opens the star chart window and runs the animation.
-     * @param event button click
-     * @throws SQLException
-     * @throws FileNotFoundException
-     */
+    
     @FXML
     protected void handleRunButtonAction(ActionEvent event) throws SQLException, FileNotFoundException {
     	
@@ -110,7 +102,7 @@ public class ChartFormController2 extends Calculations {
         
         stage.show();
         
-     // calculate the positions and sizes of the background stars
+        // calculate the positions and sizes of the background stars
         
         initializeStars();
         
@@ -118,7 +110,7 @@ public class ChartFormController2 extends Calculations {
                 new EventHandler<ActionEvent>() {
 
         	/**
-        	 * This updates the positions of the objects in the chart and moves time forward
+        	 * Updates the positions of the objects in the chart and moves time forward
         	 */
         	@Override
             public void handle(ActionEvent t) {

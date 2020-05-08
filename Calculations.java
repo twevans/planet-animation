@@ -79,7 +79,7 @@ public class Calculations extends Parameters {
         return d;
     }
 	
-public void initializeChart() throws FileNotFoundException, SQLException {
+    public void initializeChart() throws FileNotFoundException, SQLException {
     	
     	stars = new Star2();
         
@@ -154,7 +154,7 @@ public void initializeChart() throws FileNotFoundException, SQLException {
     }
     
     /**
-     * This sets the initial positions and sizes of the stars in the chart.
+     * Sets the initial positions and sizes of the stars in the chart.
      */
     public void initializeStars() {
     	
@@ -180,7 +180,7 @@ public void initializeChart() throws FileNotFoundException, SQLException {
     }
     
     /**
-     * This updates the positions and sizes of the stars in the chart.
+     * Updates the positions and sizes of the stars in the chart.
      */
     public void updateStars() {
     	
@@ -268,8 +268,6 @@ public void initializeChart() throws FileNotFoundException, SQLException {
     	
     	
     }
-    
-    
     
     /**
      * Updates this planet's position in the chart.
